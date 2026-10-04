@@ -1,0 +1,534 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Orça SINAPI</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f4f3ee;--pn:#fff;--ink:#1c2326;--mu:#697378;--ln:#dcd9ce;--ac:#0f5c4d;--ac2:#e2eee9;--wa:#a4570b;--er:#b3261e;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14181a;--pn:#1c2225;--ink:#e7eae8;--mu:#8d989d;--ln:#2e373b;--ac:#5fc1a8;--ac2:#1d3933;--wa:#e0a35c;--er:#f08a82}}
+:root[data-theme="dark"]{--bg:#14181a;--pn:#1c2225;--ink:#e7eae8;--mu:#8d989d;--ln:#2e373b;--ac:#5fc1a8;--ac2:#1d3933;--wa:#e0a35c;--er:#f08a82}
+*{box-sizing:border-box}html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 'IBM Plex Sans',system-ui,sans-serif;min-width:1180px}
+#app{display:grid;grid-template-columns:230px 1fr;grid-template-rows:56px 1fr;height:100%}
+header{grid-column:1/3;display:flex;align-items:center;gap:14px;padding:0 24px;border-bottom:1px solid var(--ln);background:var(--pn)}
+.logo{font-weight:600;font-size:16px;letter-spacing:.2px}.logo b{color:var(--ac)}
+.chip{font:12px 'IBM Plex Mono',monospace;background:var(--ac2);color:var(--ac);padding:3px 9px;border-radius:99px;margin-left:auto}.chip.off{background:transparent;border:1px dashed var(--er);color:var(--er)}
+nav{padding:18px 12px;border-right:1px solid var(--ln);overflow:auto}
+nav a{display:flex;gap:10px;align-items:center;padding:10px 12px;border-radius:6px;cursor:pointer;color:var(--mu);margin-bottom:2px}
+nav a i{font:500 12px 'IBM Plex Mono',monospace;width:22px;height:22px;border:1px solid var(--ln);border-radius:50%;display:grid;place-items:center;font-style:normal}
+nav a.on{background:var(--ac2);color:var(--ac);font-weight:500}nav a.on i{border-color:var(--ac)}
+main{overflow:auto;padding:28px 36px 60px}
+h1{font-size:20px;margin:0 0 4px;font-weight:600}.sub{color:var(--mu);margin:0 0 22px;max-width:760px}
+.card{background:var(--pn);border:1px solid var(--ln);border-radius:8px;padding:20px;margin-bottom:16px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.s2{grid-column:span 2}.s4{grid-column:span 4}
+label{display:block;font-size:12px;color:var(--mu);font-weight:500}
+input,select,textarea{width:100%;margin-top:4px;padding:8px 10px;border:1px solid var(--ln);border-radius:6px;background:var(--bg);color:var(--ink);font:inherit}
+textarea{resize:vertical;min-height:64px}input:focus,select:focus,textarea:focus{outline:2px solid var(--ac);outline-offset:-1px}
+button{font:inherit;cursor:pointer;border:1px solid var(--ln);background:var(--pn);color:var(--ink);padding:7px 14px;border-radius:6px}
+button.p{background:var(--ac);color:#fff;border-color:var(--ac);font-weight:500}button.p:disabled{opacity:.4;cursor:not-allowed}
+button.g{border:0;background:none;color:var(--ac);padding:4px 6px}button.x{border:0;background:none;color:var(--mu);padding:2px 6px}
+.drop{display:block;border:1.5px dashed var(--ln);border-radius:8px;padding:38px;text-align:center;cursor:pointer;color:var(--mu)}.drop:hover{border-color:var(--ac);color:var(--ac)}
+.drop input{display:none}.kv{display:flex;gap:36px;flex-wrap:wrap}.kv b{display:block;font:500 20px 'IBM Plex Mono',monospace}.kv span{font-size:12px;color:var(--mu)}
+table{width:100%;border-collapse:collapse;font-size:13px}th{font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--mu);text-align:left;font-weight:500;padding:6px 8px;border-bottom:1px solid var(--ln)}
+td{padding:6px 8px;border-bottom:1px solid var(--ln);vertical-align:middle}td input{margin:0;padding:4px 6px}.n{text-align:right;font-family:'IBM Plex Mono',monospace}.cd{font-family:'IBM Plex Mono',monospace;color:var(--mu)}
+.orc{display:grid;grid-template-columns:400px 1fr;gap:16px;align-items:start}.orc>div:first-child{position:sticky;top:0}
+.res{max-height:520px;overflow:auto;margin-top:10px}.res div{display:grid;grid-template-columns:1fr auto;gap:4px 10px;padding:8px 4px;border-bottom:1px solid var(--ln);font-size:12.5px}.res small{color:var(--mu);font-family:'IBM Plex Mono',monospace}
+.eh{display:flex;gap:10px;align-items:center;margin-bottom:8px}.eh input{font-weight:600}.eh .tt{white-space:nowrap}.sel{border-color:var(--ac);box-shadow:0 0 0 1px var(--ac)}
+.hl td,.card.hl{background:var(--ac2)}.hd{cursor:grab;color:var(--mu);user-select:none;width:18px}.ok{color:var(--ac)}.wr{color:var(--wa)}.er{color:var(--er)}.empty{color:var(--mu);text-align:center;padding:30px}
+.ck{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--ln)}#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:6px;display:none}
+
+.dc{cursor:pointer;text-align:right;min-width:104px;border:1px solid var(--ln);border-radius:6px;padding:4px 8px;background:var(--bg);font-family:'IBM Plex Mono',monospace;line-height:1.3}.dc:hover{border-color:var(--ac)}.dc small{display:block;color:var(--mu)}.dc .mu{color:var(--mu);font-size:12px}.dc.blk{opacity:.45;cursor:not-allowed;background:transparent;border-style:dashed}.dc.blk:hover{border-color:var(--ln)}
+#mdov{position:fixed;inset:0;background:rgba(0,0,0,.45);display:grid;place-items:center;z-index:50}.mdl{background:var(--pn);border:1px solid var(--ln);border-radius:10px;padding:22px;width:430px;max-width:92vw;box-shadow:0 12px 40px rgba(0,0,0,.3)}.mdl h2{font-size:16px;margin:0 0 2px}
+.seg{display:flex;border:1px solid var(--ln);border-radius:6px;overflow:hidden}.seg button{flex:1;border:0;border-radius:0;background:var(--bg);color:var(--mu)}.seg button.on{background:var(--ac);color:#fff;font-weight:500}.seg button:disabled{opacity:.4;cursor:not-allowed}
+.mdin{display:grid;grid-template-columns:1fr auto;gap:4px 12px;margin:12px 0;font-size:12.5px;color:var(--mu)}.mdin b{color:var(--ink);font-family:'IBM Plex Mono',monospace;font-weight:500;text-align:right}.mdb{display:flex;gap:8px;align-items:center;margin-top:16px}#mdnote{font-size:12.5px;min-height:18px}
+</style></head><body>
+<div id="app"><header><div class="logo">Orça<b>·SINAPI</b></div><span class="sub" style="margin:0">Orçamento sintético, resumo e cronograma</span><span id="chip" class="chip off">sem base</span></header><nav id="nav"></nav><main id="main"></main></div><div id="toast"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<script>
+const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const UFN={AC:'Acre',AL:'Alagoas',AM:'Amazonas',AP:'Amapá',BA:'Bahia',CE:'Ceará',DF:'Distrito Federal',ES:'Espírito Santo',GO:'Goiás',MA:'Maranhão',MG:'Minas Gerais',MS:'Mato Grosso do Sul',MT:'Mato Grosso',PA:'Pará',PB:'Paraíba',PE:'Pernambuco',PI:'Piauí',PR:'Paraná',RJ:'Rio de Janeiro',RN:'Rio Grande do Norte',RO:'Rondônia',RR:'Roraima',RS:'Rio Grande do Sul',SC:'Santa Catarina',SE:'Sergipe',SP:'São Paulo',TO:'Tocantins'};
+const REG={SD:['Não desonerado','CSD','ISD','Não desonerado: encargos sociais sobre a mão de obra não desonerados, de acordo com as bases.'],CD:['Desonerado','CCD','ICD','Desonerado: embutido nos preços unitário dos insumos de mão de obra, de acordo com as bases.'],SE:['Sem encargos sociais','CSE','ISE','Sem encargos sociais sobre a mão de obra, de acordo com as bases.']};
+const fmt=n=>(n||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}),r2=x=>Math.round((x+Number.EPSILON)*100)/100;
+const norm=s=>String(s).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+let db=null,view='base',logo=null,lastRes=[],dbReady=false;
+/* ---------- Logos: tamanho real da imagem e posicionamento ---------- */
+function imgSz(src){try{const b=Uint8Array.from(atob(src.split(',')[1]),c=>c.charCodeAt(0));
+ if(b[0]===0x89)return{w:((b[16]<<24)|(b[17]<<16)|(b[18]<<8)|b[19])>>>0,h:((b[20]<<24)|(b[21]<<16)|(b[22]<<8)|b[23])>>>0};
+ let i=2;while(i<b.length-8){if(b[i]!==0xFF){i++;continue}const m=b[i+1];if(m>=0xC0&&m<=0xCF&&m!==0xC4&&m!==0xC8&&m!==0xCC)return{h:(b[i+5]<<8)|b[i+6],w:(b[i+7]<<8)|b[i+8]};i+=2+((b[i+2]<<8)|b[i+3])}}catch(e){}return{w:1,h:1}}
+function fitImg(src,mw,mh){const d=imgSz(src),k=Math.min(mw/d.w,mh/d.h)||1;return{w:d.w*k,h:d.h*k}}
+
+const NEW=()=>({obra:{regime:'SD',uf:'AM',cargo:'Responsável Técnico'},etapas:[],meses:3,dist:{},sel:0,inicio:'',prazo:0,dur:30,bdiD:{},enc:[],inc:{bdi:false,enc:false},med:[],msel:0,dia:[]}),pid=()=>'p'+Date.now()+Math.floor(Math.random()*999);
+let S=NEW(),P={cur:null,items:{}},warned=false;
+try{const t=localStorage.getItem('orcasinapi_p');if(t)P=JSON.parse(t);else{const o=localStorage.getItem('orcasinapi');if(o){const id=pid();P={cur:id,items:{[id]:{id,arq:false,upd:Date.now(),data:JSON.parse(o)}}}}}}catch(e){}
+if(!P.items||!P.cur||!P.items[P.cur]){const id=pid();P={cur:id,items:{[id]:{id,arq:false,upd:Date.now(),data:NEW()}}}}
+S=Object.assign(NEW(),P.items[P.cur].data);
+const store=()=>{try{localStorage.setItem('orcasinapi_p',JSON.stringify(P))}catch(e){if(!warned){warned=true;toast('Armazenamento do navegador cheio: exporte o projeto para não perder dados.')}}};
+const save=()=>{const p=P.items[P.cur];p.data=S;p.upd=Date.now();store()};
+const toast=m=>{const t=$('#toast');t.textContent=m;t.style.display='block';clearTimeout(toast.h);toast.h=setTimeout(()=>t.style.display='none',3200)};
+const idb=(m,v)=>new Promise(ok=>{try{const q=indexedDB.open('orcasinapi',1);q.onupgradeneeded=()=>q.result.createObjectStore('k');q.onsuccess=()=>{const o=q.result.transaction('k',m==='get'?'readonly':'readwrite').objectStore('k'),r=m==='get'?o.get('db'):m==='del'?o.delete('db'):o.put(v,'db');r.onsuccess=()=>ok(r.result);r.onerror=()=>ok(null)};q.onerror=()=>ok(null)}catch(e){ok(null)}});
+
+/* ---------- Base SINAPI ---------- */
+function parse(buf){
+ const wb=XLSX.read(buf,{type:'array',cellFormula:true,sheets:['ISD','ICD','ISE','CSD','CCD','CSE','Analítico']});
+ const items=new Map();let ufs=null,ref='',emi='';
+ for(const [rg,a] of Object.entries(REG))for(const [nm,kind] of [[a[1],'C'],[a[2],'I']]){
+  const ws=wb.Sheets[nm];if(!ws||!ws['!ref'])continue;
+  const R=XLSX.utils.decode_range(ws['!ref']),g=(r,c)=>ws[XLSX.utils.encode_cell({r,c})],v=(r,c)=>g(r,c)?.v;
+  let hr=-1;for(let r=0;r<20;r++){if(/^(Grupo|Classifica)/.test(String(v(r,0)??'').trim())){hr=r;break}}
+  if(hr<0)continue;
+  for(let r=0;r<8;r++){const t=String(v(r,0)??'');if(!ref&&t.startsWith('Mês de Ref'))ref=String(v(r,1));if(!emi&&t.startsWith('Data de em'))emi=String(v(r,1))}
+  let best=null;
+  for(const r of [hr-1,hr]){const m={};for(let c=0;c<=R.e.c;c++){const t=String(v(r,c)??'').trim();if(UFN[t]&&!(t in m))m[t]=c}if(!best||Object.keys(m).length>Object.keys(best).length)best=m}
+  if(!ufs)ufs=Object.keys(best).sort();
+  for(let r=hr+1;r<=R.e.r;r++){
+   const x=g(r,1);if(!x)continue;
+   let code=x.f?(x.f.match(/MATCH\(\s*(\d+)/)||[])[1]:x.v;code=String(code??'').trim();if(!code||code==='0')continue;
+   const d=v(r,2);if(!d)continue;
+   const key=kind+code;let it=items.get(key);
+   if(!it){it={k:kind,c:code,g:v(r,0)||'',d:String(d),u:String(v(r,3)??''),p:{}};items.set(key,it)}
+   it.p[rg]=ufs.map(u=>{const n=v(r,best[u]);return typeof n==='number'?n:null});
+  }
+ }
+ let an=null;const wa=wb.Sheets['Analítico'];
+ if(wa&&wa['!ref']){an={};const Q=XLSX.utils.decode_range(wa['!ref']);let h=-1;for(let r=0;r<20;r++){if(/^Grupo/.test(String(wa[XLSX.utils.encode_cell({r,c:0})]?.v??'').trim())){h=r;break}}
+  for(let r=h+1;h>=0&&r<=Q.e.r;r++){const g=c=>wa[XLSX.utils.encode_cell({r,c})]?.v,t=g(2);if(!t)continue;const k=String(g(1)).trim();(an[k]||(an[k]=[])).push([t==='INSUMO'?'I':'C',String(g(3)).trim(),String(g(4)??''),String(g(5)??''),+g(6)||0])}}
+ if(!items.size)throw new Error('Nenhuma composição ou insumo encontrado. Verifique se é a planilha de referência SINAPI.');
+ return {ref,emi,ufs,items:[...items.values()],an};
+}
+function setDb(d){d.items.forEach(i=>i.s=norm(i.d+' '+i.c));d.map=new Map(d.items.map(i=>[i.k+i.c,i]));d.nc=d.items.filter(i=>i.k==='C').length;d.ni=d.items.length-d.nc;db=d;
+ if(!d.ufs.includes(S.obra.uf))S.obra.uf=d.ufs[0];
+ $('#chip').className='chip';$('#chip').textContent='SINAPI '+d.ref}
+async function loadFile(f){
+ $('#main').innerHTML='<h1>Processando base…</h1><p class="sub">Lendo composições e insumos de '+esc(f.name)+'. Pode levar alguns segundos.</p>';
+ setTimeout(async()=>{try{const d=parse(await f.arrayBuffer());await idb('put',{ref:d.ref,emi:d.emi,ufs:d.ufs,items:d.items,an:d.an});setDb(d);toast('Base SINAPI '+d.ref+' carregada')}catch(e){toast(e.message)}render()},50)}
+
+/* ---------- Cálculo ---------- */
+const bdiF=()=>1+(+S.obra.bdi||0)/100;
+function unitOf(i){if(i.banco!=='SINAPI')return +i.unit||0;const it=db?.map.get(i.k+i.c);return it?.p[S.obra.regime]?.[db.ufs.indexOf(S.obra.uf)]??null}
+function calc(){let tot=0;const E=S.etapas.map(e=>{let t=0;const it=e.itens.map(i=>{const u=unitOf(i),ub=u==null?0:r2(u*bdiF()),T=r2((+i.qtd||0)*ub);t+=T;return{u,ub,T}});t=r2(t);tot+=t;return{t,it}});return{E,tot:r2(tot)}}
+function updTotals(){const c=calc(),pn=issues().reduce((m,x)=>(m[x.a]=(m[x.a]||0)+1,m),{});c.E.forEach((e,a)=>{e.it.forEach((x,b)=>{const u=$('#u'+a+'_'+b),t=$('#t'+a+'_'+b),q=$('#qq'+a+'_'+b);if(u){u.textContent=x.u==null?'sem preço':fmt(x.ub);u.classList.toggle('er',x.u==null)}if(t)t.textContent=fmt(x.T);if(q)q.style.borderColor=+S.etapas[a].itens[b].qtd>0?'':'var(--er)'});const pe=$('#pn'+a);if(pe){pe.hidden=!pn[a];pe.textContent='⚠ '+(pn[a]||0)}const el=$('#te'+a);if(el)el.textContent='R$ '+fmt(e.t)});const t=$('#tt');if(t)t.textContent='R$ '+fmt(c.tot)}
+
+/* ---------- Projetos ---------- */
+const cur=()=>P.items[P.cur];
+function switchTo(id){save();P.cur=id;S=Object.assign(NEW(),P.items[id].data);P.items[id].data=S;if(db&&!db.ufs.includes(S.obra.uf))S.obra.uf=db.ufs[0];store()}
+function anyActive(ex){const x=Object.values(P.items).find(p=>!p.arq&&p.id!==ex);return x?x.id:null}
+function newProj(){const id=pid();P.items[id]={id,arq:false,upd:Date.now(),data:NEW()};switchTo(id)}
+function dataOf(id){return id===P.cur?S:P.items[id].data}
+function leave(id){const n=anyActive(id);if(n)switchTo(n);else newProj()}
+/* ---------- Cronograma: datas, curva S ---------- */
+const dur=()=>Math.max(1,+S.dur||30),nper=()=>+S.prazo>0?Math.min(36,Math.ceil(S.prazo/dur())):S.meses,pd=p=>+S.prazo>0?Math.min((p+1)*dur(),+S.prazo):dur()*(p+1);
+const pdate=p=>{if(!S.inicio)return '';const[y,m,d]=S.inicio.split('-').map(Number);return new Date(y,m-1,d+pd(p)-1).toLocaleDateString('pt-BR')};
+const bdiCalc=()=>{const D=S.bdiD||{},v=k=>(+D[k]||0)/100,I=v('pis')+v('cofins')+v('iss')+v('cprb');return I<1?(1+v('ac')+v('s')+v('r')+v('g'))*(1+v('df'))*(1+v('l'))/(1-I)-1:0};
+function sched(){const c=calc(),n=S.meses,per=Array(n).fill(0),E=S.etapas.map((e,a)=>{const T=c.E[a].t,d=(S.dist[e.id]||[]).slice(0,n).map(x=>+x||0);while(d.length<n)d.push(0);let last=-1;d.forEach((x,p)=>{if(x>0)last=p});const full=Math.abs(d.reduce((x,y)=>x+y,0)-100)<.005;let ac=0;const v=Array(n).fill(null);for(let p=0;p<n;p++)if(d[p]>0){v[p]=p===last&&full?r2(T-ac):r2(T*d[p]/100);ac+=v[p];per[p]+=v[p]}return{T,d,v}});let ac=0;return{c,n,E,per,cum:per.map(x=>ac+=x),tot:c.tot}}
+function drawS(cv){const s=sched(),W=cv.width=900,H=cv.height=380,g=cv.getContext('2d');if(!g)return false;g.fillStyle='#fff';g.fillRect(0,0,W,H);
+ const L=60,Rr=50,T=80,B=52,pw=W-L-Rr,ph=H-T-B,n=s.n,bw=pw/n,tot=s.tot||1,pc=x=>(x/tot*100).toFixed(1).replace('.',',')+'%';
+ g.textAlign='center';g.fillStyle='#1F3864';g.font='bold 14px Arial';g.fillText('CURVA S - EVOLUÇÃO FÍSICO-FINANCEIRA',W/2,22);
+ g.font='11px Arial';g.fillStyle='#444';g.fillText('Valor total: R$ '+fmt(s.tot)+'  |  100% = '+pd(n-1)+' dias'+(S.inicio?' (até '+pdate(n-1)+')':''),W/2,38);
+ g.fillStyle='#D8ECF6';g.fillRect(W/2-150,46,14,10);g.fillStyle='#444';g.textAlign='left';g.fillText('Execução no período (%)',W/2-132,55);g.strokeStyle='#1F3864';g.lineWidth=2.5;g.beginPath();g.moveTo(W/2+30,51);g.lineTo(W/2+50,51);g.stroke();g.fillText('Acumulado (%)',W/2+56,55);
+ g.lineWidth=1;g.strokeStyle='#ddd';g.textAlign='right';for(let k=0;k<=10;k++){const y=T+ph-ph*k/10;g.beginPath();g.moveTo(L,y);g.lineTo(W-Rr,y);g.stroke();g.fillStyle='#444';g.fillText(k*10+'%',L-6,y+4)}
+ g.strokeStyle='#e6e6e6';g.fillStyle='#444';g.font='11px Arial';g.textAlign='center';const d0=S.inicio?(([y,m,d])=>new Date(y,m-1,d).toLocaleDateString('pt-BR'))(S.inicio.split('-').map(Number)):'';
+ for(let p=-1;p<n;p++){const x=L+bw*(p+1);g.beginPath();g.moveTo(x,T);g.lineTo(x,T+ph+4);g.stroke();g.fillText(p<0?'início':pd(p)+' dias',x,H-B+18);if(S.inicio)g.fillText(p<0?d0:pdate(p),x,H-B+32)}
+ for(let p=0;p<n;p++){const h=ph*s.per[p]/tot,cx=L+bw*(p+.5);g.fillStyle='#D8ECF6';g.fillRect(cx-bw*.3,T+ph-h,bw*.6,h);g.fillStyle='#1F3864';g.font='bold 11px Arial';if(s.per[p]>0)g.fillText(pc(s.per[p]),cx,T+ph-5)}
+ const P=s.cum.map((v,p)=>[L+bw*(p+1),T+ph-ph*v/tot]);g.strokeStyle='#1F3864';g.lineWidth=2.5;g.beginPath();g.moveTo(L,T+ph);P.forEach(q=>g.lineTo(q[0],q[1]));g.stroke();
+ g.fillStyle='#1F3864';g.font='bold 11px Arial';P.forEach((q,p)=>{g.beginPath();g.arc(q[0],q[1],4,0,7);g.fill();g.fillText(pc(s.cum[p]),q[0],q[1]-9)});return true}
+/* ---------- Base: data de emissão ---------- */
+function emiDays(){if(!db)return null;const t=String(db.emi||'').trim(),m=t.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);let d=null;if(m)d=new Date(+m[3],m[2]-1,+m[1]);else if(/^\d{5}$/.test(t))d=new Date(Math.round((+t-25569)*864e5));if(!d||isNaN(d))return null;const n=new Date();return{d,n:Math.floor((new Date(n.getFullYear(),n.getMonth(),n.getDate())-d)/864e5)}}
+const ensureIds=()=>{const seen=new Set();let ch=false;S.etapas.forEach(e=>e.itens.forEach(i=>{if(!i.id||seen.has(i.id)){i.id='i'+Date.now().toString(36)+Math.random().toString(36).slice(2,7);ch=true}seen.add(i.id)}));if(ch)save()};
+const fdt=x=>x?x.split('-').reverse().join('/'):'',today=()=>new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10);
+/* ---------- Medição ---------- */
+function medCalc(){const c=calc(),M=S.med||[],k=Math.min(Math.max(S.msel||0,0),M.length-1),m=M[k],R={},T={vm:0,va:0,bad:0};if(!m)return{M,k,m,R,T,c};
+ S.etapas.forEach((e,a)=>e.itens.forEach((i,b)=>{const ub=c.E[a].it[b].ub,Q=+i.qtd||0,pv=M.slice(0,k).reduce((s,y)=>s+(+y.q?.[i.id]||0),0),cu=+m.q?.[i.id]||0,A=pv+cu,v=r2(cu*ub),bad=A>Q+1e-6;R[i.id]={Q,pv,cu,A,v,bad};T.vm+=v;T.va+=r2(pv*ub)+v;if(bad)T.bad++}));T.vm=r2(T.vm);T.va=r2(T.va);return{M,k,m,R,T,c}}
+const medTot=(T,c)=>`<b>Medição:</b> R$ ${fmt(T.vm)} &nbsp; <b>Acumulado:</b> R$ ${fmt(T.va)} (${fmt(c.tot?T.va/c.tot*100:0)}%) &nbsp; <b>Saldo:</b> R$ ${fmt(c.tot-T.va)}${T.bad?` &nbsp; <span class="er">⚠ ${T.bad} item(ns) acima do contratado</span>`:''}`;
+function medUpd(){const{R,T,c}=medCalc(),q=(id,t,bad)=>{const e=document.getElementById(id);if(e){e.textContent=t;e.classList.toggle('er',!!bad)}};for(const id in R){const x=R[id];q('mA_'+id,fmt(x.A),x.bad);q('mS_'+id,fmt(x.Q-x.A));q('mP_'+id,fmt(x.Q?x.A/x.Q*100:0)+'%');q('mV_'+id,fmt(x.v))}const t=$('#mt');if(t)t.innerHTML=medTot(T,c)}
+/* ---------- Conferência ---------- */
+function issues(){const c=calc(),o=[];S.etapas.forEach((e,a)=>{const n=`${a+1}. ${e.nome||'(sem nome)'}`;if(!e.nome)o.push({a,b:-1,t:'Etapa sem nome',d:n});if(!e.itens.length)o.push({a,b:-1,t:'Etapa sem itens',d:n});e.itens.forEach((i,b)=>{const u=c.E[a].it[b].u,d=`${a+1}.${b+1} ${i.c||''} ${i.d||'(sem descrição)'}`;if(!(u>0))o.push({a,b,t:'Sem preço',d});if(!(+i.qtd>0))o.push({a,b,t:'Quantidade zerada',d});if(i.banco!=='SINAPI'&&!i.d)o.push({a,b,t:'Item próprio sem descrição',d})})});return o}
+/* ---------- Views ---------- */
+const fld=(l,k,o={})=>`<label class="${o.c||''}">${l}${o.ta?`<textarea data-f="o" data-k="${k}">${esc(S.obra[k])}</textarea>`:`<input data-f="o" data-k="${k}" type="${o.t||'text'}" ${o.t==='number'?'step="0.01" min="0"':''} value="${esc(S.obra[k])}">`}</label>`;
+const lg=(k,t)=>`<label class="s2">${t} (PNG/JPG, opcional)<input type="file" accept="image/png,image/jpeg" data-f="logo" data-k="${k}"></label>`.replace('</label>',S[k]?`<span style="display:flex;gap:10px;align-items:center;margin-top:6px"><img src="${S[k]}" style="height:44px"><button class="g" data-a="rlogo" data-k="${k}">remover</button></span></label>`:'</label>');
+const CLIMA=['Sol','Nublado','Chuva fraca','Chuva forte'];
+const V={
+med(){ensureIds();const{M,k,m,R,T,c}=medCalc(),ok=S.etapas.some(e=>e.itens.length);
+ if(!m)return `<h1>Medição de obras</h1><p class="sub">Registre as medições (boletins) do contrato: quantidade executada por período, acumulado, saldo e valor medido, calculados sobre o orçamento deste projeto.</p><div class="card"><p class="empty">${ok?'Nenhuma medição criada.':'Monte o orçamento antes de criar medições.'}</p><button class="p" data-a="mnew" ${ok?'':'disabled'}>+ Nova medição</button></div>`;
+ const rows=S.etapas.map((e,a)=>e.itens.length?`<tr><td colspan="10" style="background:var(--ac2)"><b>${a+1}. ${esc(e.nome||'(sem nome)')}</b></td></tr>`+e.itens.map((i,b)=>{const x=R[i.id];return `<tr><td class="cd">${a+1}.${b+1}</td><td>${esc(i.d||'')}</td><td>${esc(i.u||'')}</td><td class="n">${fmt(x.Q)}</td><td class="n">${fmt(x.pv)}</td><td><input class="n" type="number" min="0" step="0.01" style="width:90px" data-f="mq" data-id="${i.id}" value="${x.cu||''}"></td><td class="n ${x.bad?'er':''}" id="mA_${i.id}">${fmt(x.A)}</td><td class="n" id="mS_${i.id}">${fmt(x.Q-x.A)}</td><td class="n" id="mP_${i.id}">${fmt(x.Q?x.A/x.Q*100:0)}%</td><td class="n" id="mV_${i.id}">${fmt(x.v)}</td></tr>`}).join(''):'').join('');
+ return `<h1>Medição de obras</h1><p class="sub">Informe a quantidade executada em cada item. O acumulado, o saldo e o valor medido são calculados com o preço do orçamento (com B.D.I.).</p>
+<div class="card"><div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">${M.map((x,i)=>`<button class="${i===k?'p':''}" data-a="msel" data-i="${i}">Medição ${i+1}</button>`).join('')}<button class="g" data-a="mnew">+ Nova medição</button></div>
+<div class="grid"><label>Período — início<input type="date" data-f="mf" data-k="ini" value="${esc(m.ini)}"></label><label>Período — fim<input type="date" data-f="mf" data-k="fim" value="${esc(m.fim)}"></label><label class="s2">Observações<input data-f="mf" data-k="obs" value="${esc(m.obs)}"></label></div></div>
+<div class="card"><table><tr><th>Item</th><th>Descrição</th><th>Und</th><th class="n">Contratado</th><th class="n">Anterior</th><th>Esta medição</th><th class="n">Acumulado</th><th class="n">Saldo</th><th class="n">% exec.</th><th class="n">Valor medido</th></tr>${rows}</table><p id="mt" style="margin-top:14px">${medTot(T,c)}</p>
+<button class="p" data-a="mexp">Exportar boletim (Excel)</button> <button data-a="mdel">Excluir esta medição</button></div>`},
+dia(){const D=(S.dia||[]).slice().sort((a,b)=>(b.data||'').localeCompare(a.data||'')),f=(x,k,l,o={})=>`<label class="${o.c||''}">${l}${o.ta?`<textarea data-f="df" data-id="${x.id}" data-k="${k}">${esc(x[k])}</textarea>`:o.sel?`<select data-f="df" data-id="${x.id}" data-k="${k}">${CLIMA.map(v=>`<option ${v===x[k]?'selected':''}>${v}</option>`).join('')}</select>`:`<input type="${o.t||'text'}" data-f="df" data-id="${x.id}" data-k="${k}" value="${esc(x[k])}">`}</label>`;
+ return `<h1>Diário de obras</h1><p class="sub">Registro diário da execução: clima, efetivo, equipamentos, serviços executados e ocorrências. Exporte para Excel para anexar ao processo.</p>
+<div class="card" style="display:flex;gap:10px"><button class="p" data-a="dnew">+ Novo registro</button><button data-a="dexp" ${D.length?'':'disabled'}>Exportar diário (Excel)</button></div>
+${D.map(x=>`<div class="card"><div class="grid">${f(x,'data','Data',{t:'date'})}${f(x,'manha','Clima — manhã',{sel:1})}${f(x,'tarde','Clima — tarde',{sel:1})}${f(x,'efetivo','Efetivo (nº de trabalhadores)',{t:'number'})}${f(x,'equipe','Equipe / funções',{c:'s2'})}${f(x,'equip','Equipamentos',{c:'s2'})}${f(x,'serv','Serviços executados',{ta:1,c:'s4'})}${f(x,'ocor','Ocorrências',{ta:1,c:'s4'})}${f(x,'resp','Responsável',{c:'s2'})}<div style="align-self:end;text-align:right" class="s2"><button class="x" data-a="ddel" data-id="${x.id}">Excluir registro ✕</button></div></div></div>`).join('')||'<div class="card empty">Nenhum registro.</div>'}`},
+bdi(){const D=S.bdiD||{},f=(k,l)=>`<label>${l}<input type="number" step="0.01" min="0" data-f="bd" data-k="${k}" value="${D[k]??''}"></label>`,EN=S.enc||[],sm=(g,k)=>EN.filter(x=>x.g===g).reduce((t,x)=>t+(+x[k]||0),0),op=g=>['A','B','C','D'].map(v=>`<option ${v===g?'selected':''}>${v}</option>`).join('');
+ return `<h1>B.D.I. e Encargos</h1><p class="sub">Opcional. Detalhe a composição do B.D.I. e dos encargos sociais para incluir como abas no Excel quando o órgão exigir (marque em "Gerar Excel").</p>
+<div class="card"><b>Composição do B.D.I.</b><div class="grid" style="margin-top:12px">${f('ac','Administração central (%)')}${f('s','Seguro (%)')}${f('r','Risco (%)')}${f('g','Garantia (%)')}${f('df','Despesas financeiras (%)')}${f('l','Lucro (%)')}${f('pis','PIS (%)')}${f('cofins','COFINS (%)')}${f('iss','ISS (%)')}${f('cprb','CPRB (%)')}</div>
+<p>B.D.I. calculado: <b class="n" id="bdic">${fmt(bdiCalc()*100)}%</b> &nbsp; <button data-a="usebdi">Usar no orçamento</button> <small class="cd">B.D.I. atual do orçamento: ${fmt(+S.obra.bdi||0)}%</small></p></div>
+<div class="card"><div class="eh"><b>Encargos sociais</b><button class="g" data-a="ecadd" style="margin-left:auto">+ Linha</button></div>
+${EN.length?`<table><tr><th>Grupo</th><th>Código</th><th>Descrição</th><th class="n">Horista (%)</th><th class="n">Mensalista (%)</th><th></th></tr>${EN.map((x,i)=>`<tr><td><select style="width:60px;margin:0" data-f="ec" data-k="g" data-i="${i}">${op(x.g)}</select></td><td><input style="width:70px" data-f="ec" data-k="c" data-i="${i}" value="${esc(x.c)}"></td><td><input data-f="ec" data-k="d" data-i="${i}" value="${esc(x.d)}"></td><td><input class="n" type="number" step="0.01" style="width:100px" data-f="ec" data-k="h" data-i="${i}" value="${x.h??''}"></td><td><input class="n" type="number" step="0.01" style="width:100px" data-f="ec" data-k="m" data-i="${i}" value="${x.m??''}"></td><td><button class="x" data-a="ecrm" data-i="${i}">✕</button></td></tr>`).join('')}
+${['A','B','C','D'].filter(g=>EN.some(x=>x.g===g)).map(g=>`<tr><td colspan="3" class="n"><b>Total Grupo ${g}</b></td><td class="n">${fmt(sm(g,'h'))}</td><td class="n">${fmt(sm(g,'m'))}</td><td></td></tr>`).join('')}<tr><td colspan="3" class="n"><b>TOTAL</b></td><td class="n"><b>${fmt(sm('A','h')+sm('B','h')+sm('C','h')+sm('D','h'))}</b></td><td class="n"><b>${fmt(sm('A','m')+sm('B','m')+sm('C','m')+sm('D','m'))}</b></td><td></td></tr></table>`:'<div class="empty">Nenhuma linha. Cadastre os percentuais conforme o relatório de encargos sociais do SINAPI.</div>'}</div>`},
+proj(){const L=Object.values(P.items).sort((a,b)=>b.upd-a.upd),row=x=>{const d=dataOf(x.id),on=x.id===P.cur,B=(a,t)=>`<button class="g" data-a="${a}" data-id="${x.id}">${t}</button>`;return `<tr><td><b>${esc(d.obra.projeto||'Projeto sem título')}</b>${on?' <span class="chip" style="margin:0 0 0 6px">aberto</span>':''}<br><small class="cd">${esc(d.obra.prefeitura||'')}</small></td><td class="n">${d.etapas.length}</td><td class="n">${d.etapas.reduce((s,e)=>s+e.itens.length,0)}</td><td class="cd">${new Date(x.upd).toLocaleString('pt-BR')}</td><td style="white-space:nowrap;text-align:right">${x.arq?B('prest','Restaurar'):(on?'':B('popen','Abrir'))+B('pdup','Duplicar')+B('parq','Arquivar')}${B('pexp','Exportar')}<button class="x" data-a="pdel" data-id="${x.id}" title="Excluir">✕</button></td></tr>`},tb=l=>`<table><tr><th>Projeto</th><th class="n">Etapas</th><th class="n">Itens</th><th>Atualizado</th><th></th></tr>${l.map(row).join('')}</table>`,at=L.filter(x=>!x.arq),ar=L.filter(x=>x.arq);
+ return `<h1>Projetos</h1><p class="sub">Todos os orçamentos ficam salvos neste navegador. Exporte um projeto para levar a outro computador ou guardar um backup.</p>
+<div class="card" style="display:flex;gap:10px;align-items:center"><button class="p" data-a="pnew">+ Novo projeto</button><label style="display:inline-block;margin:0;border:1px solid var(--ln);padding:7px 14px;border-radius:6px;cursor:pointer;color:var(--ink);font-size:14px;font-weight:400">Importar projeto (.json)<input type="file" accept=".json,application/json" data-f="pimp" style="display:none"></label></div>
+<div class="card">${tb(at)}</div>${ar.length?`<h1 style="font-size:15px;margin-top:24px">Arquivados</h1><div class="card">${tb(ar)}</div>`:''}`},
+base(){return `<h1>Base SINAPI</h1><p class="sub">Envie a planilha de referência do SINAPI (.xlsx). Ela fica salva neste navegador; para atualizar a base, basta enviar a planilha do mês seguinte.</p>
+${(()=>{const e=db&&emiDays();return e&&e.n>30?`<div class="card" style="border-color:var(--wa)"><b class="wr">⚠ Base possivelmente desatualizada</b><br>A base SINAPI ${esc(db.ref)} foi emitida em ${e.d.toLocaleDateString('pt-BR')}, há ${e.n} dias (mais de 30). Verifique no site oficial do SINAPI se há uma base mais recente e, se houver, envie a nova planilha abaixo.</div>`:''})()}${db?`<div class="card"><div class="kv"><div><b>${esc(db.ref)}</b><span>mês de referência</span></div><div><b>${esc(db.emi)}</b><span>emissão</span></div><div><b>${db.ufs.length}</b><span>UFs</span></div><div><b>${db.nc.toLocaleString('pt-BR')}</b><span>composições</span></div><div><b>${db.ni.toLocaleString('pt-BR')}</b><span>insumos</span></div><div><b>${(()=>{const e=emiDays();return e?e.n:'—'})()}</b><span>dias desde a emissão</span></div><div><b>${db.an?Object.keys(db.an).length.toLocaleString('pt-BR'):'—'}</b><span>composições analíticas</span></div></div></div>`:''}
+<div class="card"><b>Como obter e importar a base (manual)</b>
+<ol style="margin:10px 0 0 18px;padding:0;line-height:1.75">
+<li>Abra a página de downloads da CAIXA: <a href="https://www.caixa.gov.br/site/Paginas/downloads.aspx#categoria_888" target="_blank" rel="noopener" style="color:var(--ac);font-weight:500">Download de Arquivos | CAIXA</a>, na categoria do SINAPI.</li>
+<li><b>Baixe</b> o arquivo ZIP do mês de referência mais recente.</li>
+<li><b>Extraia</b> (descompacte) o ZIP em uma pasta do seu computador.</li>
+<li>Localize a planilha de referência, com nome parecido com <span class="cd">SINAPI_Referência_AAAA_MM.xlsx</span>.</li>
+<li><b>Importe</b>: clique na área abaixo e selecione essa planilha (ou arraste o arquivo para ela) e aguarde a leitura.</li>
+</ol><p class="sub" style="margin:12px 0 0;font-size:12.5px">Repita o processo todo mês. Se o arquivo escolhido não tiver o formato esperado, o sistema avisa que não encontrou composições nem insumos.</p></div>
+<label class="drop"><input type="file" accept=".xlsx,.xlsm" data-f="file">${db?'Substituir por uma nova base SINAPI':'Selecionar ou arrastar a planilha SINAPI (.xlsx)'}</label>`},
+obra(){const ufs=db?db.ufs:Object.keys(UFN);return `<h1>Dados da obra</h1><p class="sub">Estas informações compõem o cabeçalho das três abas do Excel.</p>
+<div class="card"><div class="grid">${fld('Estado','estado',{c:'s2'})}${fld('Órgão / Prefeitura','prefeitura',{c:'s2'})}${fld('Projeto','projeto',{c:'s4'})}${fld('Local','local',{c:'s2'})}${fld('Interessado','interessado',{c:'s2'})}</div></div>
+<div class="card"><div class="grid"><label>UF da base de preços<select data-f="o" data-k="uf">${ufs.map(u=>`<option ${u===S.obra.uf?'selected':''} value="${u}">${u} — ${UFN[u]}</option>`).join('')}</select></label>
+<label>Regime<select data-f="o" data-k="regime">${Object.entries(REG).map(([k,a])=>`<option value="${k}" ${k===S.obra.regime?'selected':''}>${a[0]}</option>`).join('')}</select></label>${fld('B.D.I. (%)','bdi',{t:'number'})}
+<div style="align-self:end"><button data-a="auto">Preencher Bancos e Encargos</button></div>
+${fld('Bancos','bancos',{ta:1,c:'s2'})}${fld('Encargos sociais','encargos',{ta:1,c:'s2'})}</div></div>
+<div class="card"><div class="grid">${fld('Responsável técnico','responsavel',{c:'s2'})}${fld('Cargo','cargo',{c:'s2'})}</div></div>
+<div class="card"><div class="grid">${lg('logoE','Logo esquerdo — Estado')}${lg('logoD','Logo direito — Município')}</div></div>`},
+orc(){return `<h1>Orçamento</h1><p class="sub">Pesquise composições ou insumos do SINAPI, adicione à etapa selecionada e informe as quantidades.</p>
+<div class="orc"><div class="card"><div style="display:flex;gap:8px"><select id="qt" style="width:130px;margin:0"><option value="C">Composições</option><option value="I">Insumos</option></select><input id="q" placeholder="Código ou termos da descrição" style="margin:0" data-f="q"></div><div class="res" id="res"><div class="empty" style="display:block">${db?'Digite para pesquisar.':'Carregue a base SINAPI primeiro.'}</div></div></div><div id="bud"></div></div>`},
+crono(){const n=S.meses,c=calc(),sc=sched();return `<h1>Cronograma físico-financeiro</h1><p class="sub">Clique em um período para informar o avanço da etapa em porcentagem ou em valor (R$). Cada linha deve somar 100%; ao atingir 100%, os demais períodos da etapa são bloqueados.</p>
+<div class="card" style="display:flex;gap:16px;align-items:end"><label style="width:150px">Data de início<input type="date" value="${esc(S.inicio)}" data-f="cr" data-k="inicio"></label><label style="width:110px">Prazo (dias)<input type="number" min="0" value="${S.prazo||''}" data-f="cr" data-k="prazo"></label><label style="width:120px">Período (dias)<input type="number" min="1" value="${S.dur||30}" data-f="cr" data-k="dur"></label><label style="width:120px">Nº de períodos<input type="number" min="1" max="24" value="${n}" data-f="m" ${+S.prazo>0?'disabled':''}></label><button data-a="rst">Limpar cronograma</button></div>
+<div class="card"><table><tr><th>Etapa</th><th class="n">Valor</th>${Array.from({length:n},(_,p)=>`<th class="n">${pd(p)} dias${S.inicio?'<br><small>até '+pdate(p)+'</small>':''}</th>`).join('')}<th class="n">Soma</th></tr>
+${S.etapas.map((e,a)=>{const d=S.dist[e.id]||[],s=d.slice(0,n).reduce((x,y)=>x+(+y||0),0),full=Math.abs(s-100)<.005;return `<tr><td>${a+1}. ${esc(e.nome||'(sem nome)')}</td><td class="n">${fmt(c.E[a].t)}</td>${Array.from({length:n},(_,p)=>`<td><div class="dc ${full&&!(+d[p]>0)?'blk':''}" data-a="dcell" data-e="${a}" data-p="${p}" title="${full&&!(+d[p]>0)?'Etapa já atingiu 100%':'Clique para editar'}">${+d[p]>0?`<b>R$ ${fmt(sc.E[a].v[p])}</b><small>${fmt(+d[p])}%</small>`:`<span class="mu">${full?'bloqueado':'definir'}</span>`}</div></td>`).join('')}<td class="n ${Math.abs(s-100)<.005?'ok':'wr'}" id="ds${a}">${fmt(s)}</td></tr>`}).join('')||`<tr><td class="empty" colspan="9">Crie as etapas do orçamento primeiro.</td></tr>`}</table></div><div class="card"><canvas id="cs" style="width:100%;max-width:900px"></canvas></div>`},
+gerar(){const c=calc(),n=S.etapas.length,ni=S.etapas.reduce((s,e)=>s+e.itens.length,0),np=S.etapas.reduce((s,e,a)=>s+c.E[a].it.filter(x=>x.u==null).length,0),bad=S.etapas.filter(e=>Math.abs((S.dist[e.id]||[]).slice(0,S.meses).reduce((x,y)=>x+(+y||0),0)-100)>.005).length,O=S.obra;
+ const ck=(ok,t,bad='wr')=>`<div class="ck"><span class="${ok?'ok':bad}">${ok?'●':'○'}</span>${!ok&&bad==='er'?`<b class="er">${t}</b>`:t}</div>`;
+ return `<h1>Gerar Excel</h1><p class="sub">Arquivo com as abas Resumo do Orçamento, Orçamento Sintético e CRONOGRAMA, com fórmulas ativas.</p><div class="card">
+${ck(!!db,db?'Base SINAPI '+esc(db.ref)+' carregada':'Base SINAPI não carregada','er')}${ck(!!(O.prefeitura&&O.projeto),'Prefeitura e projeto informados')}${ck(ni>0,ni+' itens em '+n+' etapas')}${ck(np===0&&ni>0,np?np+' itens sem preço na UF/regime selecionados':'Todos os itens com preço')}${ck(n>0&&!bad,bad?bad+' etapa(s) com cronograma ≠ 100%':'Cronograma completo')}${ck(!!db?.an,db?.an?'Composições analíticas disponíveis':'Base sem aba Analítico: recarregue a planilha SINAPI para incluir as composições analíticas')}
+<div style="margin:16px 0"><b>Conferência do orçamento</b>${(()=>{const is=issues();return is.length?is.slice(0,40).map(x=>`<div class="ck"><span class="wr">⚠</span><span style="flex:1"><b>${x.t}</b> — ${esc(x.d)}</span><button class="g" data-a="goi" data-e="${x.a}" data-i="${x.b}">ir ao item</button></div>`).join('')+(is.length>40?`<div class="ck">e mais ${is.length-40} pendências…</div>`:''):'<div class="ck"><span class="ok">●</span>Nenhuma pendência encontrada.</div>'})()}</div>
+<p><b class="n" id="tt">R$ ${fmt(c.tot)}</b> total geral com B.D.I.</p><div style="margin:12px 0"><label style="display:flex;gap:8px;align-items:center;color:var(--ink)"><input type="checkbox" style="width:auto;margin:0" data-f="inc" data-k="bdi" ${S.inc?.bdi?'checked':''}>Incluir aba B.D.I. detalhado</label><label style="display:flex;gap:8px;align-items:center;color:var(--ink);margin-top:6px"><input type="checkbox" style="width:auto;margin:0" data-f="inc" data-k="enc" ${S.inc?.enc?'checked':''}>Incluir aba Encargos Sociais ${S.inc?.enc&&!(S.enc||[]).length?'<span class="wr">(nenhuma linha cadastrada)</span>':''}</label></div><button class="p" data-a="gen" ${ni?'':'disabled'}>Gerar arquivo Excel</button> <button class="p" data-a="pdf" ${ni?'':'disabled'}>Gerar PDF (mesmas abas do Excel)</button></div>`}};
+const NAV=[['base','Base SINAPI'],['proj','Projetos'],['obra','Dados da obra'],['bdi','B.D.I. e Encargos'],['orc','Orçamento'],['crono','Cronograma'],['med','Medição'],['dia','Diário de obras'],['gerar','Gerar Excel']];
+function render(){$('#nav').innerHTML=NAV.map((n,i)=>`<a data-a="go" data-v="${n[0]}" class="${n[0]===view?'on':''}"><i>${i+1}</i>${n[1]}${n[0]==='base'&&(()=>{const e=emiDays();return e&&e.n>30})()?' <span class="wr" title="Base com mais de 30 dias">⚠</span>':''}</a>`).join('');const noDb=dbReady&&!db&&view!=='base'&&view!=='proj'?`<div class="card" style="border-color:var(--er);background:color-mix(in srgb,var(--er) 8%,var(--pn));display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap"><span><b class="er">⚠ Base SINAPI não carregada</b><br><small class="cd">Sem a base não é possível pesquisar composições e insumos nem obter preços. Carregue a planilha de referência na aba <b>Base SINAPI</b>.</small></span><button data-a="go" data-v="base">Ir para Base SINAPI →</button></div>`:'';$('#main').innerHTML=noDb+`<div style="float:right"><button data-a="reset" ${view==='proj'?'hidden':''}>↺ ${view==='base'?'Remover base':view==='gerar'?'Resetar tudo':'Resetar esta aba'}</button></div>`+V[view]();if(view==='orc')renderBud();if(view==='crono'){const cv=$('#cs');if(cv)drawS(cv)}}
+function renderBud(){const c=calc(),pn=issues().reduce((m,x)=>(m[x.a]=(m[x.a]||0)+1,m),{});$('#bud').innerHTML=`<div style="display:flex;gap:8px;margin-bottom:10px"><button data-a="cola">Recolher todas</button><button data-a="expa">Expandir todas</button></div>`+S.etapas.map((e,a)=>`<div class="card ${a===S.sel?'sel':''}" id="c${a}" data-dz="e" data-e="${a}"><div class="eh" style="margin-bottom:${e.cl?0:8}px"><button class="x" data-a="tg" data-e="${a}" title="Recolher/expandir">${e.cl?'▸':'▾'}</button><span class="hd" draggable="true" data-dg="e" data-e="${a}" title="Arraste para reordenar">⠿</span><b class="cd">${a+1}</b><input data-f="en" data-e="${a}" placeholder="Nome da etapa" value="${esc(e.nome)}"><span class="wr" id="pn${a}" title="Pendências" ${pn[a]?'':'hidden'}>⚠ ${pn[a]||0}</span><small class="cd">${e.itens.length} itens</small><span class="tt n" id="te${a}">R$ ${fmt(c.E[a].t)}</span><button class="g" data-a="pick" data-e="${a}">${a===S.sel?'selecionada':'selecionar'}</button><button class="g" data-a="dupe" data-e="${a}">duplicar</button><button class="x" data-a="rme" data-e="${a}">✕</button></div>
+${e.cl?'':e.itens.length?`<table><tr><th></th><th>Item</th><th>Código</th><th>Descrição</th><th>Und</th><th>Memória de cálculo</th><th>Quant.</th><th class="n">Unit c/ BDI</th><th class="n">Total</th><th></th></tr>${e.itens.map((i,b)=>{const p=i.banco!=='SINAPI',d=(f,w,t)=>`<input data-f="pi" data-k="${f}" data-e="${a}" data-i="${b}" ${t?'type="number" step="0.01"':''} style="width:${w}" value="${esc(i[f])}">`;
+return `<tr id="r${a}_${b}" data-dz="i" data-e="${a}" data-i="${b}"><td class="hd" draggable="true" data-dg="i" data-e="${a}" data-i="${b}">⠿</td><td class="cd">${a+1}.${b+1}</td><td class="cd">${p?d('c','70px'):esc(i.c)}</td><td>${p?d('d','100%'):esc(i.d)}${p?'<br>'+d('unit','90px',1)+' <small>valor unitário sem BDI</small>':''}</td><td>${p?d('u','48px'):esc(i.u)}</td><td><input style="width:150px" placeholder="ex.: 12 x 3 x 2" data-f="mem" data-e="${a}" data-i="${b}" value="${esc(i.mem||'')}"></td><td><input id="qq${a}_${b}" class="n" type="number" min="0" step="0.01" style="width:84px;${i.qtd>0?'':'border-color:var(--er)'}" data-f="q" data-e="${a}" data-i="${b}" value="${i.qtd||''}"></td><td class="n ${c.E[a].it[b].u==null?'er':''}" id="u${a}_${b}">${c.E[a].it[b].u==null?'sem preço':fmt(c.E[a].it[b].ub)}</td><td class="n" id="t${a}_${b}">${fmt(c.E[a].it[b].T)}</td><td style="white-space:nowrap"><button class="x" data-a="dupi" data-e="${a}" data-i="${b}" title="Duplicar item">⧉</button><button class="x" data-a="rmi" data-e="${a}" data-i="${b}">✕</button></td></tr>`}).join('')}</table>`:'<div class="empty">Nenhum item. Pesquise ao lado e adicione.</div>'}
+${e.cl?'':`<button class="g" data-a="own" data-e="${a}">+ item próprio</button>`}</div>`).join('')+`<div style="display:flex;justify-content:space-between;align-items:center"><button data-a="adde">+ Nova etapa</button><b>Total geral <span class="n" id="tt">R$ ${fmt(c.tot)}</span></b></div>`}
+function search(){const q=norm($('#q').value).trim().split(/\s+/).filter(Boolean),k=$('#qt').value;if(!db||!q.length){$('#res').innerHTML='';return}
+ lastRes=[];for(const i of db.items){if(i.k===k&&q.every(t=>i.s.includes(t))){lastRes.push(i);if(lastRes.length>=60)break}}
+ $('#res').innerHTML=lastRes.map((i,x)=>{const p=i.p[S.obra.regime]?.[db.ufs.indexOf(S.obra.uf)];return `<div><span>${esc(i.d)}<br><small>${i.c} · ${esc(i.u)} · ${p==null?'sem preço':'R$ '+fmt(p)}</small></span><button class="g" data-a="add" data-x="${x}">Adicionar</button></div>`}).join('')||'<div class="empty" style="display:block">Nenhum resultado.</div>'}
+
+/* ---------- Modal do cronograma ---------- */
+let MD=null;
+const mdTrim=x=>String(+(+x).toFixed(4));
+function mdCtx(){const E=S.etapas[MD.a],T=calc().E[MD.a].t,oth=(S.dist[E.id]||[]).slice(0,S.meses).reduce((x,y,i)=>i===MD.p?x:x+(+y||0),0);return{E,T,oth,rem:Math.max(0,100-oth)}}
+function mdClose(){MD=null;const o=$('#mdov');if(o)o.remove()}
+function mdRead(){const{T,rem}=mdCtx(),v=Math.max(0,+($('#mdv')?.value)||0);let p=MD.mode==='v'?(T>0?v/T*100:0):v;if(MD.mode==='v'&&T>0&&r2(v)===r2(T*rem/100))p=rem;return{p:Math.min(+p.toFixed(10),rem),cut:p>rem+1e-9}}
+function mdUpd(){const{T,oth}=mdCtx(),r=mdRead(),vm=MD.mode==='v';if(r.cut)$('#mdv').value=vm?String(r2(T*r.p/100)):mdTrim(r.p);
+ $('#mdeq').textContent=vm?'= '+fmt(r.p)+'% da etapa':'= R$ '+fmt(r2(T*r.p/100));
+ $('#mdnote').textContent=(r.cut?'Valor limitado ao disponível da etapa. ':'')+(r.p>0&&oth+r.p>=100-.005?'Com este valor a etapa atinge 100%: os demais períodos serão bloqueados.':'')}
+function mdRender(pct){const{E,T,oth,rem}=mdCtx(),vm=MD.mode==='v',val=pct>0?(vm?String(r2(T*pct/100)):mdTrim(pct)):'';const old=$('#mdov');if(old)old.remove();
+ document.body.insertAdjacentHTML('beforeend',`<div id="mdov" data-a="dbg"><div class="mdl" role="dialog" aria-modal="true"><h2>Etapa ${MD.a+1} — ${esc(E.nome||'(sem nome)')}</h2><p class="sub" style="margin:0 0 14px">Período: ${pd(MD.p)} dias${S.inicio?' (até '+pdate(MD.p)+')':''}</p>
+<div class="seg"><button data-a="dmode" data-m="p" class="${vm?'':'on'}">Porcentagem (%)</button><button data-a="dmode" data-m="v" class="${vm?'on':''}" ${T>0?'':'disabled title="Etapa sem valor: adicione itens com preço"'}>Valor (R$)</button></div>
+<label style="margin-top:14px">${vm?'Valor neste período (R$)':'Porcentagem neste período (%)'}<input id="mdv" type="number" min="0" max="${vm?r2(T*rem/100):rem}" step="0.01" value="${val}"></label><div class="cd" id="mdeq" style="margin-top:4px;font-size:12.5px"></div>
+<div class="mdin"><span>Valor da etapa</span><b>R$ ${fmt(T)}</b><span>Nos outros períodos</span><b>${fmt(oth)}% · R$ ${fmt(r2(T*oth/100))}</b><span>Disponível neste período</span><b>${fmt(rem)}% · R$ ${fmt(r2(T*rem/100))}</b></div><div id="mdnote" class="wr"></div>
+<div class="mdb"><button class="g" data-a="dclear">Limpar</button><span style="flex:1"></span><button data-a="dclose">Cancelar</button><button class="p" data-a="dsave">Salvar</button></div></div></div>`);
+ mdUpd();const i=$('#mdv');i.focus();i.select()}
+function openD(a,p){const E=S.etapas[a];if(!E)return;const T=calc().E[a].t,d=S.dist[E.id]||[],cur=+d[p]||0,oth=d.slice(0,S.meses).reduce((x,y,i)=>i===p?x:x+(+y||0),0);
+ if(oth>=100-.005&&!(cur>0)){toast('Esta etapa já atingiu 100%. Reduza outro período para liberar este.');return}
+ MD={a,p,mode:S.dmode==='v'&&T>0?'v':'p'};mdRender(cur)}
+function mdSave(clear){if(!MD)return;const{E}=mdCtx(),p=clear?0:mdRead().p,d=S.dist[E.id]||(S.dist[E.id]=[]);for(let i=0;i<S.meses;i++)d[i]=+d[i]||0;d[MD.p]=p;save();mdClose();render()}
+
+/* ---------- Eventos ---------- */
+document.addEventListener('click',e=>{const t=e.target.closest('[data-a]');if(!t)return;const a=t.dataset.a,ei=+t.dataset.e,ii=+t.dataset.i;
+ if(a==='go'){view=t.dataset.v;render()}
+ else if(a==='dcell')openD(ei,+t.dataset.p)
+ else if(a==='dmode'){const m=t.dataset.m;if(!MD||m===MD.mode)return;const{p}=mdRead();MD.mode=m;S.dmode=m;save();mdRender(p)}
+ else if(a==='dsave')mdSave()
+ else if(a==='dclear')mdSave(true)
+ else if(a==='dclose')mdClose()
+ else if(a==='dbg'){if(e.target===t)mdClose()}
+ else if(a==='adde'){S.etapas.push({id:'e'+Date.now(),nome:'',itens:[]});S.sel=S.etapas.length-1;save();renderBud()}
+ else if(a==='rme'){if(confirm('Remover esta etapa e seus itens?')){S.etapas.splice(ei,1);S.sel=0;save();renderBud()}}
+ else if(a==='rmi'){S.etapas[ei].itens.splice(ii,1);save();renderBud()}
+ else if(a==='pick'){S.sel=ei;renderBud()}
+ else if(a==='own'){S.etapas[ei].itens.push({banco:'Próprio',c:'',d:'',u:'',qtd:0,unit:0});save();renderBud()}
+ else if(a==='add'){const E=S.etapas[S.sel];if(!E)return toast('Crie uma etapa antes de adicionar itens.');const i=lastRes[+t.dataset.x];E.itens.push({banco:'SINAPI',k:i.k,c:i.c,d:i.d,u:i.u,qtd:0});save();renderBud();toast('Adicionado à etapa '+(S.sel+1))}
+ else if(a==='auto'){const O=S.obra;O.bancos=(db?`SINAPI - ${db.ref} - ${UFN[O.uf]}`:'');O.encargos=REG[O.regime][3];save();render()}
+ else if(a==='eq'){const n=S.meses;S.etapas.forEach(x=>S.dist[x.id]=Array.from({length:n},()=>r2(100/n)).map((v,i,a)=>i===n-1?r2(100-v*(n-1)):v));save();render()}
+ else if(a==='reset'){const M={base:'Remover a base SINAPI salva neste navegador?',obra:'Limpar todos os dados da obra e os logos?',orc:'Apagar todas as etapas e itens do orçamento? O cronograma também será limpo.',crono:'Limpar todo o cronograma?',med:'Apagar todas as medições deste projeto?',dia:'Apagar todos os registros do diário de obras?',bdi:'Limpar a composição do B.D.I. e os encargos cadastrados?',gerar:'Resetar TUDO (obra, logos, orçamento e cronograma)? A base SINAPI é mantida.'};
+  if(!confirm(M[view]))return;const dflt={regime:'SD',uf:db?(db.ufs.includes('AM')?'AM':db.ufs[0]):'AM',cargo:'Responsável Técnico'};
+  if(view==='base'){idb('del').then(()=>{db=null;$('#chip').className='chip off';$('#chip').textContent='sem base';render();toast('Base removida')});return}
+  if(view==='obra'||view==='gerar'){S.obra=dflt;S.logoE=S.logoD=null}
+  if(view==='orc'||view==='gerar'){S.etapas=[];S.dist={};S.sel=0}
+  if(view==='crono'||view==='gerar'){S.dist={};S.meses=3;S.inicio='';S.prazo=0;S.dur=30}
+  if(view==='med'||view==='gerar'){S.med=[];S.msel=0}
+  if(view==='dia'||view==='gerar'){S.dia=[]}
+  if(view==='bdi'||view==='gerar'){S.bdiD={};S.enc=[];S.inc={bdi:false,enc:false}}
+  save();render();toast('Campos resetados')}
+ else if(a==='dupe'){const E=S.etapas[ei],N=JSON.parse(JSON.stringify(E));N.id='e'+Date.now();N.itens.forEach(x=>delete x.id);N.nome=(E.nome||'')+' (cópia)';S.dist[N.id]=(S.dist[E.id]||[]).slice();S.etapas.splice(ei+1,0,N);S.sel=ei+1;save();renderBud()}
+ else if(a==='dupi'){const L=S.etapas[ei].itens;const cl=JSON.parse(JSON.stringify(L[ii]));delete cl.id;L.splice(ii+1,0,cl);save();renderBud()}
+ else if(a==='rlogo'){S[t.dataset.k]=null;save();render()}
+ else if(a==='rst'){if(confirm('Limpar todos os percentuais do cronograma?')){S.dist={};save();render()}}
+
+ else if(a==='tg'){S.etapas[ei].cl=!S.etapas[ei].cl;save();renderBud()}
+ else if(a==='cola'||a==='expa'){S.etapas.forEach(x=>x.cl=a==='cola');save();renderBud()}
+ else if(a==='goi'){S.etapas[ei].cl=false;S.sel=ei;view='orc';save();render();setTimeout(()=>{const el=document.getElementById(ii>=0?`r${ei}_${ii}`:`c${ei}`);if(el){el.scrollIntoView({block:'center'});el.classList.add('hl')}},30)}
+ else if(a==='pnew'){newProj();view='obra';render();toast('Novo projeto criado')}
+ else if(a==='popen'){switchTo(t.dataset.id);view='orc';render()}
+ else if(a==='pdup'){const id=t.dataset.id,d=JSON.parse(JSON.stringify(dataOf(id))),n=pid();d.obra.projeto=(d.obra.projeto||'Projeto')+' (cópia)';P.items[n]={id:n,arq:false,upd:Date.now(),data:d};store();render();toast('Projeto duplicado')}
+ else if(a==='parq'){const id=t.dataset.id;if(id===P.cur){save();leave(id)}P.items[id].arq=true;store();render()}
+ else if(a==='prest'){P.items[t.dataset.id].arq=false;store();render()}
+ else if(a==='pdel'){const id=t.dataset.id;if(!confirm('Excluir este projeto definitivamente? Exporte antes se quiser guardar uma cópia.'))return;if(id===P.cur)leave(id);delete P.items[id];store();render()}
+ else if(a==='pexp'){const id=t.dataset.id,d=dataOf(id),nm=('Projeto_'+(d.obra.projeto||'sem_titulo')).replace(/[^\w]+/g,'_').slice(0,80)+'.json';dl(nm,new Blob([JSON.stringify({app:'orca-sinapi',v:1,exportado:new Date().toISOString(),data:d})],{type:'application/json'}),'Projeto exportado')}
+ else if(a==='gen'){const n=issues().length;if(n&&!confirm(`Há ${n} pendência(s) no orçamento. Gerar mesmo assim?`))return;gerar()}
+ else if(a==='mnew'){(S.med||(S.med=[])).push({id:'m'+Date.now(),ini:'',fim:'',obs:'',q:{}});S.msel=S.med.length-1;save();render()}
+ else if(a==='msel'){S.msel=ii;render()}
+ else if(a==='mdel'){if(!confirm('Excluir esta medição?'))return;S.med.splice(Math.min(S.msel||0,S.med.length-1),1);S.msel=Math.max(0,(S.msel||0)-1);save();render()}
+ else if(a==='mexp')mexp()
+ else if(a==='dnew'){(S.dia||(S.dia=[])).push({id:'d'+Date.now(),data:today(),manha:'Sol',tarde:'Sol',efetivo:'',equipe:'',equip:'',serv:'',ocor:'',resp:S.obra.responsavel||''});save();render()}
+ else if(a==='ddel'){if(!confirm('Excluir este registro?'))return;S.dia=S.dia.filter(x=>x.id!==t.dataset.id);save();render()}
+ else if(a==='dexp')dexp()
+ else if(a==='pdf'){const n=issues().length;if(n&&!confirm(`Há ${n} pendência(s) no orçamento. Gerar mesmo assim?`))return;pdf()}
+ else if(a==='usebdi'){S.obra.bdi=r2(bdiCalc()*100);save();render();toast('B.D.I. do orçamento atualizado para '+fmt(S.obra.bdi)+'%')}
+ else if(a==='ecadd'){(S.enc||(S.enc=[])).push({g:'A',c:'',d:'',h:'',m:''});save();render()}
+ else if(a==='ecrm'){S.enc.splice(ii,1);save();render()}});
+document.addEventListener('change',e=>{const t=e.target,f=t.dataset.f;if(!f)return;const a=+t.dataset.e,i=+t.dataset.i;
+ if(f==='file'&&t.files[0])loadFile(t.files[0]);
+ else if(f==='o'){S.obra[t.dataset.k]=t.value;save()}
+ else if(f==='pimp'&&t.files[0]){t.files[0].text().then(x=>{try{const j=JSON.parse(x);if(j.app!=='orca-sinapi'||!j.data)throw 0;save();const id=pid();P.items[id]={id,arq:false,upd:Date.now(),data:Object.assign(NEW(),j.data)};switchTo(id);view='orc';render();toast('Projeto importado')}catch(e){toast('Arquivo de projeto inválido.')}})}
+ else if(f==='logo'&&t.files[0]){const r=new FileReader(),k=t.dataset.k;r.onload=()=>{S[k]=r.result;save();render();toast('Logo carregado')};r.readAsDataURL(t.files[0])}
+ else if(f==='cr'){S[t.dataset.k]=t.dataset.k==='inicio'?t.value:(+t.value||0);if(S.prazo>0)S.meses=nper();save();render()}
+ else if(f==='bd'){(S.bdiD||(S.bdiD={}))[t.dataset.k]=t.value;save();const e=$('#bdic');if(e)e.textContent=fmt(bdiCalc()*100)+'%'}
+ else if(f==='ec'){S.enc[+t.dataset.i][t.dataset.k]=t.value;save();if(t.dataset.k==='h'||t.dataset.k==='m')render()}
+ else if(f==='inc'){(S.inc||(S.inc={}))[t.dataset.k]=t.checked;save()}
+ else if(f==='mq'){const m=S.med[Math.min(S.msel||0,S.med.length-1)];(m.q||(m.q={}))[t.dataset.id]=+t.value||0;save();medUpd()}
+ else if(f==='mf'){S.med[Math.min(S.msel||0,S.med.length-1)][t.dataset.k]=t.value;save()}
+ else if(f==='df'){const x=S.dia.find(y=>y.id===t.dataset.id);if(x){x[t.dataset.k]=t.value;save();if(t.dataset.k==='data')render()}}
+ else if(f==='mem'){const it=S.etapas[a].itens[i];it.mem=t.value;const x=t.value.replace(/[xX×]/g,'*').replace(/,/g,'.');if(x.trim()&&/^[\d+\-*/().\s]+$/.test(x)){try{const v=Function('return ('+x+')')();if(isFinite(v)&&v>=0){it.qtd=r2(v);const q=$('#qq'+a+'_'+i);if(q)q.value=it.qtd}}catch(e){}}save();updTotals()}
+ else if(f==='en'){S.etapas[a].nome=t.value;save();updTotals()}
+ else if(f==='q'&&t.dataset.i!==undefined){S.etapas[a].itens[i].qtd=+t.value||0;save();updTotals()}
+ else if(f==='pi'){S.etapas[a].itens[i][t.dataset.k]=t.dataset.k==='unit'?+t.value||0:t.value;save();updTotals()}
+ else if(f==='m'){S.meses=Math.min(24,Math.max(1,+t.value||1));save();render()}
+ else if(f==='d'){const E=S.etapas[a],d=S.dist[E.id]||(S.dist[E.id]=[]);d[+t.dataset.p]=+t.value||0;save();const s=d.slice(0,S.meses).reduce((x,y)=>x+(+y||0),0),c=$('#ds'+a);c.textContent=fmt(s);c.className='n '+(Math.abs(s-100)<.005?'ok':'wr');const cv=$('#cs');if(cv)drawS(cv)}});
+document.addEventListener('input',e=>{if(e.target.id==='q')search();else if(e.target.id==='mdv'&&MD)mdUpd()});
+document.addEventListener('keydown',e=>{if(!MD)return;if(e.key==='Escape')mdClose();else if(e.key==='Enter'){e.preventDefault();mdSave()}});
+document.addEventListener('change',e=>{if(e.target.id==='qt')search()});
+let DG=null;
+document.addEventListener('dragstart',e=>{const h=e.target.closest?.('[data-dg]');if(!h)return;DG={t:h.dataset.dg,a:+h.dataset.e,i:+h.dataset.i};e.dataTransfer.effectAllowed='move';e.dataTransfer.setData('text/plain','x')});
+document.addEventListener('drop',e=>{if(!DG)return;const z=e.target.closest('[data-dz]'),g=DG;DG=null;if(!z)return;const B=+z.dataset.e,I=+z.dataset.i;
+ if(g.t==='e'){const[x]=S.etapas.splice(g.a,1);S.etapas.splice(B,0,x);S.sel=B}
+ else{const[x]=S.etapas[g.a].itens.splice(g.i,1),T=S.etapas[B].itens;let at=z.dataset.dz==='i'?I:T.length;if(g.a===B&&g.i<at)at--;T.splice(at,0,x)}
+ save();renderBud()});
+document.addEventListener('dragend',()=>{DG=null});
+document.addEventListener('dragover',e=>e.preventDefault());
+document.addEventListener('drop',e=>{e.preventDefault();const f=e.dataTransfer?.files?.[0];if(f&&view==='base')loadFile(f)});
+
+/* ---------- Excel ---------- */
+async function gerar(){
+ const O=S.obra,n=S.meses,c=calc(),K=bdiF(),A='Arial',bd={style:'thin',color:{argb:'FF000000'}},B={top:bd,left:bd,bottom:bd,right:bd};
+ const st=(x,o={})=>{x.font={name:A,size:o.sz||10,bold:!!o.b||o.fill===PU,color:{argb:o.col||(o.fill===PU?'FFFFFFFF':'FF000000')}};if(o.fill)x.fill={type:'pattern',pattern:'solid',fgColor:{argb:o.fill}};x.alignment={horizontal:o.h||'left',vertical:'middle',wrapText:!!o.w};if(o.bd!==false)x.border=B;if(o.nf)x.numFmt=o.nf};
+ const put=(ws,ref,val,o)=>{const x=ws.getCell(ref);x.value=val;st(x,o);return x},mg=(ws,r)=>ws.mergeCells(r);
+ const wb=new ExcelJS.Workbook(),R=wb.addWorksheet('Resumo do Orçamento'),Z=wb.addWorksheet('Orçamento Sintético'),C=wb.addWorksheet('CRONOGRAMA');
+ const L=k=>{let s='';for(k++;k>0;k=Math.floor((k-1)/26))s=String.fromCharCode(65+(k-1)%26)+s;return s};
+ const proj=`PROJETO: ${O.projeto||''}\nLOCAL: ${O.local||''}\nINTERESSADO: ${O.interessado||''}`,PCT='0.00%',NF='#,##0.00',RS='_-"R$" * #,##0.00_-;-"R$" * #,##0.00_-;_-"R$" * "-"??_-;_-@_-';
+ const top=(ws,last,rIdx,sm)=>{mg(ws,`A4:${last}4`);mg(ws,`A5:${last}5`);const z=sm?11:13;if(!sm){ws.getRow(4).height=18;ws.getRow(5).height=20}put(ws,'A4',O.estado||'',{h:'center',sz:z,bd:false});put(ws,'A5',O.prefeitura||'',{h:'center',sz:z,b:1,bd:false});
+  const lgo=(src,col,rt)=>{if(!src)return;const id=wb.addImage({base64:src,extension:/^data:image\/png/.test(src)?'png':'jpeg'});ws.addImage(id,{tl:{nativeCol:col,nativeColOff:rt?Math.max(0,Math.round(((ws.getColumn(col+1).width||8.43)*7+5-64)*9525)):0,nativeRow:0,nativeRowOff:0},ext:{width:64,height:64}})};lgo(S.logoE,0);lgo(S.logoD,rIdx,1)};
+ const gap=ws=>{ws.getRow(7).hidden=true;ws.getRow(8).hidden=true};
+ const sig=(ws,sm)=>{const e=t=>String(t||'').replace(/&/g,'&&');ws.headerFooter.oddFooter=`&C&"Arial,Regular"&${sm?10:12}_______________________________________________\n${e(O.responsavel)}\n${e(O.cargo)}`};
+ const PU='FF1F3864',BL='FFD8ECF6',GR='FFEEEEEE';
+ const N=S.etapas.length,sumI=S.etapas.reduce((s,e)=>s+e.itens.length,0),totZ=14+N+sumI;
+ /* Sintético */
+ [['A',13],['B',12],['C',9.9],['D',60],['E',8],['F',13],['G',13],['H',16],['I',16],['J',10]].forEach(([k,w],i)=>Z.getColumn(i+1).width=w);
+ top(Z,'J',9);gap(Z);
+ mg(Z,'A9:D9');mg(Z,'E9:F9');mg(Z,'G9:H9');mg(Z,'I9:J9');mg(Z,'A10:D10');mg(Z,'E10:F10');mg(Z,'G10:H10');mg(Z,'I10:J10');
+ [['A9','Obra'],['E9','Bancos'],['G9','B.D.I.'],['I9','Encargos Sociais']].forEach(([r,v])=>put(Z,r,v,{b:1,h:'center',fill:PU,sz:11}));
+ put(Z,'A10',proj,{w:1,sz:11});put(Z,'E10',O.bancos||'',{w:1,sz:11});put(Z,'G10',(+O.bdi||0)/100,{h:'center',nf:PCT,sz:11});put(Z,'I10',O.encargos||'',{w:1,sz:11});Z.getRow(10).height=80;
+ put(Z,'K9',{formula:'1+G10',result:K},{sz:8,bd:false,nf:'0.0000',col:'FFFFFFFF'});
+ mg(Z,'A12:J12');put(Z,'A12','PLANILHA ORÇAMENTÁRIA SINTÉTICA',{b:1,sz:12,h:'center',fill:PU});
+ ['Item','Código','Banco','Descrição','Und','Quant.','Valor Unit','Valor Unit com BDI','Total','Peso (%)'].forEach((h,i)=>put(Z,L(i)+'13',h,{b:1,sz:11,h:'center',fill:PU}));
+ let r=14;const er=[],zr=[];
+ S.etapas.forEach((e,a)=>{const g=r++;er.push(g);const f=g+1;
+  put(Z,'A'+g,String(a+1),{b:1,fill:BL});['B','C'].forEach(k=>put(Z,k+g,'',{fill:BL}));put(Z,'D'+g,e.nome||'',{b:1,fill:BL});['E','F','G','H'].forEach(k=>put(Z,k+g,'',{fill:BL}));
+  e.itens.forEach((i,b)=>{const x=c.E[a].it[b],u=x.u??0;(zr[a]||(zr[a]=[]))[b]=r;
+   put(Z,'A'+r,`${a+1}.${b+1}`,{fill:GR});put(Z,'B'+r,String(i.c||''),{fill:GR});put(Z,'C'+r,i.banco,{fill:GR});put(Z,'D'+r,i.d,{w:1,fill:GR});put(Z,'E'+r,i.u,{fill:GR,h:'center'});
+   put(Z,'F'+r,+i.qtd||0,{fill:GR,h:'right',nf:NF});put(Z,'G'+r,u,{fill:GR,h:'right',nf:NF});
+   put(Z,'H'+r,{formula:`ROUND(G${r}*$K$9,2)`,result:x.ub},{fill:GR,h:'right',nf:NF});put(Z,'I'+r,{formula:`ROUND(F${r}*H${r},2)`,result:x.T},{fill:GR,h:'right',nf:NF});
+   put(Z,'J'+r,{formula:`I${r}/$I$${totZ}`,result:c.tot?x.T/c.tot:0},{b:1,fill:GR,h:'right',nf:PCT});r++});
+  put(Z,'I'+g,{formula:e.itens.length?`SUM(I${f}:I${r-1})`:'0',result:c.E[a].t},{b:1,fill:BL,h:'right',nf:NF});put(Z,'J'+g,{formula:`I${g}/$I$${totZ}`,result:c.tot?c.E[a].t/c.tot:0},{b:1,fill:BL,h:'right',nf:PCT})});
+ mg(Z,`F${totZ}:H${totZ}`);put(Z,`F${totZ}`,'Total Geral',{b:1,h:'right',bd:false});put(Z,`I${totZ}`,{formula:er.length?er.map(x=>'I'+x).join('+'):'0',result:c.tot},{b:1,h:'right',nf:RS,bd:false});sig(Z);
+ Z.pageSetup={orientation:'portrait',fitToPage:true,fitToHeight:0,fitToWidth:1,margins:{left:.4,right:.4,top:.5,bottom:1.3,header:.3,footer:.45}};
+ /* Resumo */
+ [5.8,60,30,5,10,9,10,16,12].forEach((w,i)=>R.getColumn(i+1).width=w);top(R,'I',8);gap(R);
+ mg(R,'A9:B9');mg(R,'D9:F9');mg(R,'G9:I9');mg(R,'A10:B10');mg(R,'D10:F10');mg(R,'G10:I10');
+ [['A9','Obra'],['C9','Bancos'],['D9','B.D.I.'],['G9','Encargos Sociais']].forEach(([x,v])=>put(R,x,v,{b:1,h:'center',fill:PU,sz:11}));
+ put(R,'A10',proj,{w:1,sz:11});put(R,'C10',O.bancos||'',{w:1,sz:11});put(R,'D10',(+O.bdi||0)/100,{h:'center',nf:PCT,sz:11});put(R,'G10',O.encargos||'',{w:1,sz:11});R.getRow(10).height=80;
+ mg(R,'A11:I11');put(R,'A11','PLANILHA ORÇAMENTÁRIA RESUMIDA',{b:1,sz:12,h:'center',fill:PU});
+ const totR=13+N+3;put(R,'A12','Item',{b:1,h:'center',fill:PU});mg(R,'B12:G12');put(R,'B12','Descrição',{b:1,h:'center',fill:PU});put(R,'H12','Total',{b:1,h:'center',fill:PU});put(R,'I12','Peso (%)',{b:1,h:'center',fill:PU});
+ S.etapas.forEach((e,a)=>{const q=13+a,fl=a%2?GR:BL;mg(R,`B${q}:G${q}`);put(R,'A'+q,String(a+1),{h:'center',fill:fl});put(R,'B'+q,e.nome||'',{b:1,fill:fl});put(R,'H'+q,{formula:`'Orçamento Sintético'!I${er[a]}`,result:c.E[a].t},{h:'right',nf:NF,fill:fl});put(R,'I'+q,{formula:`H${q}/$G$${totR}`,result:c.tot?c.E[a].t/c.tot:0},{h:'right',nf:PCT,fill:fl})});
+ mg(R,`E${totR}:F${totR}`);mg(R,`G${totR}:I${totR}`);put(R,`E${totR}`,'Total Geral',{b:1,h:'right'});put(R,`G${totR}`,{formula:N?`SUM(H13:H${12+N})`:'0',result:c.tot},{b:1,h:'right',nf:RS});sig(R);
+ R.pageSetup={orientation:'portrait',fitToPage:true,fitToHeight:0,fitToWidth:1,margins:{left:.4,right:.4,top:.5,bottom:1.3,header:.3,footer:.45}};
+ /* Cronograma */
+ const pc=n+3,vc=n+4,lastC=L(vc-1),Pc=L(pc-1),Vc=L(vc-1);[8.4,45,...Array(n).fill(17),10.4,19].forEach((w,i)=>C.getColumn(i+1).width=w);top(C,lastC,vc-1,1);gap(C);
+ [['A9','CRONOGRAMA FÍSICO-FINANCEIRO',1],['A10',`PROJETO: ${O.projeto||''}`],['A11',`LOCAL: ${O.local||''}`],['A12',`INTERESSADO: ${O.interessado||''}`]].forEach(([x,v,b],i)=>{mg(C,`A${9+i}:${lastC}${9+i}`);put(C,x,v,{b,h:b?'center':'left',sz:b?12:10,fill:b?PU:undefined})});
+ mg(C,'A13:A14');mg(C,'B13:B14');mg(C,`C13:${L(n+1)}13`);mg(C,`${Pc}13:${Pc}14`);put(C,'A13','ITEM',{b:1,h:'center',fill:PU});put(C,'B13','DISCRIMINAÇÃO',{b:1,h:'center',fill:PU});put(C,'C13','DIAS',{b:1,h:'center',fill:PU});put(C,Pc+'13','%',{b:1,h:'center',fill:PU});put(C,Vc+'13','VALORES',{b:1,h:'center',fill:PU});put(C,Vc+'14','R$',{b:1,h:'center',fill:PU});
+ for(let p=0;p<n;p++)put(C,L(2+p)+'14',S.inicio?pd(p)+'\n'+pdate(p):pd(p),{b:1,h:'center',w:1,fill:PU});if(S.inicio)C.getRow(14).height=28;
+ const rT=15+2*N,per=Array(n).fill(0);
+ S.etapas.forEach((e,a)=>{const q=15+2*a,fl=a%2?GR:BL,T=c.E[a].t,d=(S.dist[e.id]||[]).slice(0,n).map(x=>+x||0);let last=-1;d.forEach((x,p)=>{if(x>0)last=p});const full=Math.abs(d.reduce((x,y)=>x+y,0)-100)<.005;
+  [`A${q}:A${q+1}`,`B${q}:B${q+1}`,`${Pc}${q}:${Pc}${q+1}`,`${Vc}${q}:${Vc}${q+1}`].forEach(x=>mg(C,x));
+  put(C,'A'+q,`${a+1}.0`,{h:'center',fill:fl});put(C,'B'+q,(e.nome||'').toUpperCase(),{b:1,fill:fl});put(C,Pc+q,{formula:`${Vc}${q}/${Vc}${rT}`,result:c.tot?T/c.tot:0},{h:'center',nf:PCT,fill:fl});put(C,Vc+q,{formula:`'Resumo do Orçamento'!H${13+a}`,result:T},{h:'right',nf:NF,fill:fl});
+  let acc=0,prev=[];for(let p=0;p<n;p++){const cl=L(2+p)+q;let v=null,f=null;if(d[p]>0){if(p===last&&full){v=r2(T-acc);f=`${Vc}${q}-SUM(${prev.join(',')})`;if(!prev.length)f=`${Vc}${q}`}else{v=r2(T*d[p]/100);f=`ROUND($${Vc}${q}*${+(d[p]/100).toFixed(12)},2)`;prev.push(cl)}acc+=v;per[p]+=v}
+   put(C,cl,f?{formula:f,result:v}:null,{h:'right',nf:NF,fill:fl});put(C,L(2+p)+(q+1),f?{formula:`IF($${Vc}$${q}=0,0,${cl}/$${Vc}$${q})`,result:T?v/T:0}:null,{h:'right',nf:PCT,fill:fl,sz:9,col:'FF595959'})}});
+ mg(C,`A${rT}:B${rT}`);mg(C,`A${rT+1}:B${rT+1}`);mg(C,`A${rT+2}:B${rT+2}`);put(C,'A'+rT,'TOTAL MENSAL',{b:1,fill:BL});put(C,'A'+(rT+1),'TOTAL ACUMULADO',{b:1,fill:BL});put(C,'A'+(rT+2),'PERCENTUAL (%)',{b:1,fill:BL});
+ let ac=0;for(let p=0;p<n;p++){const k=L(2+p);ac+=per[p];put(C,k+rT,{formula:`SUM(${k}15:${k}${rT-1})`,result:per[p]},{h:'right',nf:NF,b:1,fill:BL});put(C,k+(rT+1),{formula:p?`${L(1+p)}${rT+1}+${k}${rT}`:`${k}${rT}`,result:ac},{h:'right',nf:NF,b:1,fill:BL});put(C,k+(rT+2),{formula:`${k}${rT}/$${Vc}$${rT}`,result:c.tot?per[p]/c.tot:0},{h:'right',nf:PCT,b:1,fill:BL})}
+ put(C,Pc+rT,{formula:`SUM(${Pc}15:${Pc}${rT-1})`,result:N?1:0},{h:'center',nf:PCT,b:1,fill:BL});[`${Pc}${rT}:${Pc}${rT+2}`,`${Vc}${rT}:${Vc}${rT+2}`].forEach(x=>mg(C,x));put(C,Vc+rT,{formula:`SUM(${Vc}15:${Vc}${rT-1})`,result:c.tot},{h:'right',nf:NF,b:1,fill:BL});sig(C,1);try{const cv=document.createElement('canvas');if(drawS(cv)){const id=wb.addImage({base64:cv.toDataURL('image/png'),extension:'png'});C.getRow(rT+3).addPageBreak();{const px=i=>Math.round((C.getColumn(i+1).width||8.43)*7+5);let tot=0;for(let i=0;i<vc;i++)tot+=px(i);const cw=Math.min(760,tot-20),ch=Math.round(cw*321/760),x=Math.max(0,(tot-cw)/2);let acc=0,k=0;while(k<vc-1&&acc+px(k)<=x){acc+=px(k);k++}C.addImage(id,{tl:{nativeCol:k,nativeColOff:Math.round((x-acc)*9525),nativeRow:rT+4,nativeRowOff:0},ext:{width:cw,height:ch},editAs:'oneCell'})}}}catch(e){}
+ C.pageSetup={orientation:'landscape',fitToPage:true,fitToHeight:0,fitToWidth:1,margins:{left:.4,right:.4,top:.5,bottom:1.3,header:.3,footer:.45}};
+ const ZS="'Orçamento Sintético'!",MG={left:.4,right:.4,top:.5,bottom:1.3,header:.3,footer:.45};
+ const mk=(nm,title,heads,wd)=>{const W=wb.addWorksheet(nm),la=L(heads.length-1);wd.forEach((w,i)=>W.getColumn(i+1).width=w);top(W,la,heads.length-1);mg(W,`A7:${la}7`);put(W,'A7',title,{b:1,sz:12,h:'center',fill:PU});heads.forEach((h,i)=>put(W,L(i)+'8',h,{b:1,h:'center',fill:PU}));W.pageSetup={orientation:'portrait',fitToPage:true,fitToHeight:0,fitToWidth:1,margins:MG};sig(W);return W};
+ /* Curva ABC */
+ const GM=new Map();S.etapas.forEach((e,a)=>e.itens.forEach((i,b)=>{const k=i.banco+'|'+i.c+'|'+i.d;let g=GM.get(k);if(!g)GM.set(k,g={i,T:0,Q:0,rw:[]});g.T=r2(g.T+c.E[a].it[b].T);g.Q+=+i.qtd||0;g.rw.push(zr[a][b])}));
+ const AB=[...GM.values()].sort((x,y)=>y.T-x.T);
+ if(AB.length){const W=mk('Curva ABC','CURVA ABC DE SERVIÇOS',['Pos.','Código','Banco','Descrição','Und','Quant.','Total (R$)','Peso (%)','Acum. (%)','Classe'],[7,12,10,60,8,12,16,10,10,8]),f=9,l=8+AB.length,tt=l+1;let ac=0;
+  AB.forEach((g,x)=>{const q=f+x,pw=c.tot?g.T/c.tot:0,pv=ac;ac+=pw;const cl=pv<.8?'A':pv<.95?'B':'C';
+   put(W,'A'+q,x+1,{h:'center'});put(W,'B'+q,String(g.i.c||''));put(W,'C'+q,g.i.banco);put(W,'D'+q,g.i.d,{w:1});put(W,'E'+q,g.i.u,{h:'center'});
+   put(W,'F'+q,{formula:g.rw.map(y=>ZS+'F'+y).join('+'),result:g.Q},{h:'right',nf:NF});put(W,'G'+q,{formula:g.rw.map(y=>ZS+'I'+y).join('+'),result:g.T},{h:'right',nf:NF});
+   put(W,'H'+q,{formula:`G${q}/$G$${tt}`,result:pw},{h:'right',nf:PCT});put(W,'I'+q,{formula:x?`I${q-1}+H${q}`:`H${q}`,result:ac},{h:'right',nf:PCT});
+   put(W,'J'+q,{formula:`IF(I${q}-H${q}<0.8,"A",IF(I${q}-H${q}<0.95,"B","C"))`,result:cl},{h:'center',b:1,fill:cl==='A'?BL:cl==='B'?GR:undefined})});
+  mg(W,`A${tt}:F${tt}`);put(W,'A'+tt,'Total Geral',{b:1,h:'right'});put(W,'G'+tt,{formula:`SUM(G${f}:G${l})`,result:c.tot},{b:1,h:'right',nf:NF});put(W,'H'+tt,{formula:`SUM(H${f}:H${l})`,result:c.tot?1:0},{b:1,h:'right',nf:PCT});
+  [['A','Classe A (até 80% do valor)'],['B','Classe B (80% a 95%)'],['C','Classe C (acima de 95%)']].forEach(([k,t],x)=>{const q=tt+2+x,rg=(c0)=>`$${c0}$${f}:$${c0}$${l}`;put(W,'D'+q,t,{fill:x?GR:BL});put(W,'E'+q,{formula:`COUNTIF(${rg('J')},"${k}")`},{h:'center',fill:x?GR:BL});put(W,'G'+q,{formula:`SUMIF(${rg('J')},"${k}",${rg('G')})`},{h:'right',nf:NF,fill:x?GR:BL});put(W,'H'+q,{formula:`G${q}/$G$${tt}`},{h:'right',nf:PCT,fill:x?GR:BL})});
+  put(W,'D'+(tt+1),'Resumo por classe (nº de itens, valor e peso)',{b:1,bd:false})}
+ /* Composições analíticas */
+ if(db?.an){const cm=new Map();S.etapas.forEach(e=>e.itens.forEach(i=>{if(i.banco==='SINAPI'&&i.k==='C'&&db.an[i.c]&&!cm.has(i.c))cm.set(i.c,i)}));
+  if(cm.size){const W=mk('Composições Analíticas','COMPOSIÇÕES ANALÍTICAS (SEM B.D.I.)',['Tipo','Código','Descrição','Und','Coeficiente','Valor Unit','Total'],[13,12,70,8,14,14,14]),ui=db.ufs.indexOf(O.uf);let q=9;
+   cm.forEach((i,code)=>{const hq=q++,ln=db.an[code];let sum=0;
+    ln.forEach(([t,cd,d,u,co])=>{const pr=db.map.get(t+cd)?.p[O.regime]?.[ui]??0;sum+=co*pr;
+     put(W,'A'+q,t==='I'?'Insumo':'Composição',{fill:GR});put(W,'B'+q,cd,{fill:GR});put(W,'C'+q,d,{w:1,fill:GR});put(W,'D'+q,u,{h:'center',fill:GR});put(W,'E'+q,co,{h:'right',nf:'0.0000000',fill:GR});put(W,'F'+q,pr,{h:'right',nf:NF,fill:GR});put(W,'G'+q,{formula:`E${q}*F${q}`,result:co*pr},{h:'right',nf:NF,fill:GR});q++});
+    put(W,'A'+hq,'COMPOSIÇÃO',{b:1,fill:BL});put(W,'B'+hq,code,{b:1,fill:BL});put(W,'C'+hq,i.d,{b:1,w:1,fill:BL});put(W,'D'+hq,i.u,{b:1,h:'center',fill:BL});put(W,'E'+hq,null,{fill:BL});put(W,'F'+hq,null,{fill:BL});put(W,'G'+hq,{formula:`ROUND(SUM(G${hq+1}:G${q-1}),2)`,result:r2(sum)},{b:1,h:'right',nf:NF,fill:BL})});
+   mg(W,`A${q+1}:G${q+1}`);put(W,'A'+(q+1),`Fonte: SINAPI ${db.ref} - ${UFN[O.uf]} - ${REG[O.regime][0]}. Valores sem B.D.I.`,{bd:false,sz:9})}}
+ /* Memória de cálculo */
+ const MM=[];S.etapas.forEach((e,a)=>e.itens.forEach((i,b)=>{if(i.mem)MM.push([a,b,i])}));
+ if(MM.length){const W=mk('Memória de Cálculo','MEMÓRIA DE CÁLCULO',['Item','Código','Descrição','Und','Memória de cálculo','Quant.'],[10,12,60,8,40,12]);
+  MM.forEach(([a,b,i],x)=>{const q=9+x,fl=x%2?GR:BL;put(W,'A'+q,`${a+1}.${b+1}`,{fill:fl});put(W,'B'+q,String(i.c||''),{fill:fl});put(W,'C'+q,i.d,{w:1,fill:fl});put(W,'D'+q,i.u,{h:'center',fill:fl});put(W,'E'+q,i.mem,{w:1,fill:fl});put(W,'F'+q,{formula:ZS+'F'+zr[a][b],result:+i.qtd||0},{h:'right',nf:NF,fill:fl})})}
+ if(S.inc?.bdi){const W=mk('B.D.I.','COMPOSIÇÃO DO B.D.I.',['Componente','Símbolo','Percentual'],[74,18,14]),D=S.bdiD||{},v=k=>(+D[k]||0)/100;
+  [['Administração central','AC','ac'],['Seguro','S','s'],['Risco','R','r'],['Garantia','G','g'],['Despesas financeiras','DF','df'],['Lucro','L','l'],['PIS','PIS','pis'],['COFINS','COFINS','cofins'],['ISS','ISS','iss'],['CPRB','CPRB','cprb']].forEach(([t,sy,k],x)=>{const q=9+x,fl=x%2?GR:BL;put(W,'A'+q,t,{fill:fl});put(W,'B'+q,sy,{h:'center',fill:fl});put(W,'C'+q,v(k),{h:'right',nf:PCT,fill:fl})});
+  put(W,'A19','Tributos (I = PIS + COFINS + ISS + CPRB)',{b:1});put(W,'B19','I',{h:'center',b:1});put(W,'C19',{formula:'SUM(C15:C18)',result:v('pis')+v('cofins')+v('iss')+v('cprb')},{h:'right',b:1,nf:PCT});
+  put(W,'A20','B.D.I. calculado',{b:1,fill:BL});put(W,'B20','BDI',{h:'center',b:1,fill:BL});put(W,'C20',{formula:'((1+C9+C10+C11+C12)*(1+C13)*(1+C14)/(1-C19))-1',result:bdiCalc()},{h:'right',b:1,nf:PCT,fill:BL});
+  put(W,'A21','B.D.I. adotado no orçamento',{b:1});put(W,'B21','',{});put(W,'C21',{formula:"'Orçamento Sintético'!G10",result:(+O.bdi||0)/100},{h:'right',b:1,nf:PCT});
+  mg(W,'A23:C23');put(W,'A23','BDI = [(1 + AC + S + R + G) × (1 + DF) × (1 + L) ÷ (1 − I)] − 1',{bd:false,sz:9})}
+ if(S.inc?.enc&&(S.enc||[]).length){const W=mk('Encargos Sociais','ENCARGOS SOCIAIS SOBRE A MÃO DE OBRA',['Grupo','Código','Descrição','Horista (%)','Mensalista (%)'],[9,12,64,16,16]);let q=9;const sub=[];
+  ['A','B','C','D'].forEach(gp=>{const G2=S.enc.filter(x=>x.g===gp);if(!G2.length)return;const f=q;G2.forEach((x,k)=>{const fl=k%2?GR:BL;put(W,'A'+q,gp,{h:'center',fill:fl});put(W,'B'+q,x.c||'',{fill:fl});put(W,'C'+q,x.d||'',{w:1,fill:fl});put(W,'D'+q,(+x.h||0)/100,{h:'right',nf:PCT,fill:fl});put(W,'E'+q,(+x.m||0)/100,{h:'right',nf:PCT,fill:fl});q++});
+   mg(W,`A${q}:C${q}`);put(W,'A'+q,'Total do Grupo '+gp,{b:1,h:'right',fill:PU});[['D','h'],['E','m']].forEach(([cl,k])=>put(W,cl+q,{formula:`SUM(${cl}${f}:${cl}${q-1})`,result:G2.reduce((t,x)=>t+(+x[k]||0)/100,0)},{b:1,h:'right',nf:PCT,fill:PU}));sub.push(q);q++});
+  mg(W,`A${q}:C${q}`);put(W,'A'+q,'TOTAL DOS ENCARGOS SOCIAIS',{b:1,h:'right',fill:PU});['D','E'].forEach(cl=>put(W,cl+q,{formula:sub.map(x=>cl+x).join('+')},{b:1,h:'right',nf:PCT,fill:PU}));
+  mg(W,`A${q+2}:E${q+2}`);put(W,'A'+(q+2),`Regime: ${REG[O.regime][0]}. ${O.encargos||''}`,{bd:false,sz:9,w:1})}
+ const buf=await wb.xlsx.writeBuffer(),nm=('Resumo_Sintetico_Cronograma_'+(O.prefeitura||'obra')).replace(/[^\w]+/g,'_')+'.xlsx',blob=new Blob([buf],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+ await dl(nm,blob,'Arquivo gerado')
+}
+async function pdf(){
+ const J=window.jspdf?.jsPDF;if(!J){toast('A biblioteca de PDF não foi carregada. Verifique a conexão.');return}
+ const O=S.obra,sc=sched(),c=sc.c,doc=new J({unit:'mm',format:'a4'}),PU=[31,56,100],BL=[216,236,246],GR=[238,238,238],P2=x=>(x*100).toFixed(2).replace('.',',')+'%',hd=new Set(),secs=[];let first=true;
+ const im=(src,side,W)=>{if(!src)return;try{const z=fitImg(src,28,20),x=side==='L'?10:W-10-z.w,y=6+(20-z.h)/2;doc.addImage(src,/^data:image\/png/.test(src)?'PNG':'JPEG',x,y,z.w,z.h)}catch(e){}};
+ const head=()=>{const pg=doc.getNumberOfPages();if(hd.has(pg))return;hd.add(pg);const W=doc.internal.pageSize.getWidth();im(S.logoE,'L',W);im(S.logoD,'R',W);const k=secs[secs.length-1]?.cr;doc.setTextColor(0);doc.setFont('helvetica','normal');doc.setFontSize(k?11:13);doc.text(O.estado||'',W/2,k?13:12.5,{align:'center'});doc.setFont('helvetica','bold');doc.text(O.prefeitura||'',W/2,k?19:19.5,{align:'center'})};
+ const sec=(land,cr)=>{if(!first)doc.addPage('a4',land?'landscape':'portrait');first=false;secs.push({p0:doc.getNumberOfPages(),w:doc.internal.pageSize.getWidth(),h:doc.internal.pageSize.getHeight(),cr});head()};
+ const base={theme:'grid',styles:{font:'helvetica',fontSize:8,cellPadding:1.3,lineColor:[0,0,0],lineWidth:.1,textColor:0,valign:'middle'},headStyles:{fillColor:PU,textColor:255,fontStyle:'bold',halign:'center'},footStyles:{fillColor:[255,255,255],textColor:0,fontStyle:'bold'},margin:{top:30,bottom:26,left:10,right:10},didDrawPage:head};
+ const ce=(t,fl,o={})=>({content:String(t),styles:{fillColor:fl,...o}});
+ const obra=(y,cr)=>{doc.autoTable({...base,startY:y,styles:{...base.styles,fontSize:cr?8:9},head:[['Obra','Bancos','B.D.I.','Encargos Sociais']],body:[[`PROJETO: ${O.projeto||''}\nLOCAL: ${O.local||''}\nINTERESSADO: ${O.interessado||''}`,O.bancos||'',P2((+O.bdi||0)/100),O.encargos||'']],columnStyles:{2:{halign:'center',cellWidth:18}}});return doc.lastAutoTable.finalY};
+ const tt=(t,k,w)=>[{content:t,colSpan:k,styles:{halign:'center',fontSize:10}}];
+ /* Resumo */
+ sec(false);let y=obra(30);
+ doc.autoTable({...base,startY:y,head:[tt('PLANILHA ORÇAMENTÁRIA RESUMIDA',4),['Item','Descrição','Total (R$)','Peso (%)']],showFoot:'lastPage',
+  body:S.etapas.map((e,a)=>{const fl=a%2?GR:BL,T=c.E[a].t;return[ce(a+1,fl,{halign:'center'}),ce(e.nome||'',fl,{fontStyle:'bold'}),ce(fmt(T),fl,{halign:'right'}),ce(P2(c.tot?T/c.tot:0),fl,{halign:'right'})]}),
+  foot:[[{content:'Total Geral',colSpan:2,styles:{halign:'right'}},{content:'R$ '+fmt(c.tot),colSpan:2,styles:{halign:'right'}}]],columnStyles:{0:{cellWidth:14},2:{cellWidth:40},3:{cellWidth:24}}});
+ /* Sintético */
+ sec(false);y=obra(30);
+ const rows=[];S.etapas.forEach((e,a)=>{const T=c.E[a].t,B1=(t,o={})=>ce(t,BL,{fontStyle:'bold',...o});rows.push([B1(a+1),B1(''),B1(''),B1(e.nome||''),B1(''),B1(''),B1(''),B1(''),B1(fmt(T),{halign:'right'}),B1(P2(c.tot?T/c.tot:0),{halign:'right'})]);
+  e.itens.forEach((i,b)=>{const x=c.E[a].it[b],G1=(t,o={})=>ce(t,GR,o);rows.push([G1(`${a+1}.${b+1}`),G1(i.c||''),G1(i.banco),G1(i.d||''),G1(i.u||'',{halign:'center'}),G1(fmt(+i.qtd||0),{halign:'right'}),G1(fmt(x.u||0),{halign:'right'}),G1(fmt(x.ub),{halign:'right'}),G1(fmt(x.T),{halign:'right'}),G1(P2(c.tot?x.T/c.tot:0),{halign:'right'})])})});
+ doc.autoTable({...base,startY:y,styles:{...base.styles,fontSize:6.5,cellPadding:1},showFoot:'lastPage',head:[tt('PLANILHA ORÇAMENTÁRIA SINTÉTICA',10),['Item','Código','Banco','Descrição','Und','Quant.','Valor Unit','Unit c/ BDI','Total','Peso']],body:rows,
+  foot:[[{content:'Total Geral',colSpan:8,styles:{halign:'right'}},{content:'R$ '+fmt(c.tot),colSpan:2,styles:{halign:'right'}}]],columnStyles:{0:{cellWidth:11},1:{cellWidth:14},2:{cellWidth:13},3:{cellWidth:'auto'},4:{cellWidth:9},5:{cellWidth:14},6:{cellWidth:17},7:{cellWidth:17},8:{cellWidth:20},9:{cellWidth:12}}});
+ /* Cronograma */
+ sec(true,1);y=obra(30,1);const n=sc.n,pl=Array.from({length:n},(_,p)=>pd(p)+' dias'+(S.inicio?'\n'+pdate(p):'')),ct=(t,o={},x={})=>({content:t,...x,styles:{fillColor:BL,fontStyle:'bold',halign:'right',...o}});
+ const body=S.etapas.flatMap((e,a)=>{const E=sc.E[a],fl=a%2?GR:BL,m=(t,o)=>({content:t,rowSpan:2,styles:{fillColor:fl,...o}});
+  return[[m(a+1+'.0',{halign:'center'}),m((e.nome||'').toUpperCase(),{halign:'left',fontStyle:'bold'}),...E.v.map(x=>ce(x==null?'':fmt(x),fl,{halign:'right'})),m(P2(c.tot?E.T/c.tot:0),{halign:'center'}),m(fmt(E.T),{halign:'right'})],E.d.map(x=>ce(x>0?fmt(x)+'%':'',fl,{fontSize:6,halign:'right',textColor:[90,90,90]}))]});
+ body.push([ct('TOTAL MENSAL',{halign:'left'},{colSpan:2}),...sc.per.map(x=>ct(fmt(x))),ct('100,00%',{halign:'center'},{rowSpan:3}),ct(fmt(c.tot),{},{rowSpan:3})],[ct('TOTAL ACUMULADO',{halign:'left'},{colSpan:2}),...sc.cum.map(x=>ct(fmt(x)))],[ct('PERCENTUAL (%)',{halign:'left'},{colSpan:2}),...sc.cum.map(x=>ct(P2(c.tot?x/c.tot:0)))]);
+ const cs={0:{cellWidth:12},1:{cellWidth:50}};cs[n+2]={cellWidth:16};cs[n+3]={cellWidth:28};
+ doc.autoTable({...base,startY:y,styles:{...base.styles,fontSize:n>8?6:7},head:[tt('CRONOGRAMA FÍSICO-FINANCEIRO',n+4),[{content:'ITEM',rowSpan:2},{content:'DISCRIMINAÇÃO',rowSpan:2},{content:'DIAS',colSpan:n},{content:'%',rowSpan:2},{content:'VALORES (R$)',rowSpan:2}],pl],body,columnStyles:cs});
+ try{const cv=document.createElement('canvas');if(drawS(cv)){const W=doc.internal.pageSize.getWidth(),H=doc.internal.pageSize.getHeight();let yy=doc.lastAutoTable.finalY+6;if(yy+76>H-26){doc.addPage('a4','landscape');head();yy=30}doc.addImage(cv.toDataURL('image/png'),'PNG',(W-180)/2,yy,180,76)}}catch(e){}
+
+ /* Demais abas, iguais às do Excel */
+ {const NF4=x=>(+x||0).toFixed(7).replace('.',','),
+  tbl=(title,heads,body,cs,o={})=>{sec(false);doc.autoTable({...base,startY:30,styles:{...base.styles,fontSize:o.fs||8},head:[tt(title,heads.length),heads],body,columnStyles:cs,...(o.foot?{foot:o.foot,showFoot:'lastPage'}:{})})},
+  note=t=>doc.autoTable({...base,theme:'plain',startY:doc.lastAutoTable.finalY+3,styles:{...base.styles,lineWidth:0,fontSize:7.5,cellPadding:.6,halign:'left'},body:[[t]]}),
+  RT={halign:'right'},CT={halign:'center'};
+  /* Curva ABC */
+  const GM=new Map();S.etapas.forEach((e,a)=>e.itens.forEach((i,b)=>{const k=i.banco+'|'+i.c+'|'+i.d;let g=GM.get(k);if(!g)GM.set(k,g={i,T:0,Q:0});g.T=r2(g.T+c.E[a].it[b].T);g.Q+=+i.qtd||0}));
+  const AB=[...GM.values()].sort((x,y)=>y.T-x.T);
+  if(AB.length){let ac=0;const cls={A:[0,0],B:[0,0],C:[0,0]};
+   const rw=AB.map((g,x)=>{const pw=c.tot?g.T/c.tot:0,pv=ac;ac+=pw;const cl=pv<.8?'A':pv<.95?'B':'C';cls[cl][0]++;cls[cl][1]+=g.T;
+    return[x+1,String(g.i.c||''),g.i.banco,g.i.d||'',g.i.u||'',fmt(g.Q),fmt(g.T),P2(pw),P2(ac),{content:cl,styles:{halign:'center',fontStyle:'bold',...(cl==='A'?{fillColor:BL}:cl==='B'?{fillColor:GR}:{})}}]});
+   tbl('CURVA ABC DE SERVIÇOS',['Pos.','Código','Banco','Descrição','Und','Quant.','Total (R$)','Peso (%)','Acum. (%)','Classe'],rw,
+    {0:{cellWidth:10,halign:'center'},1:{cellWidth:16},2:{cellWidth:15},3:{cellWidth:'auto'},4:{cellWidth:10,halign:'center'},5:{cellWidth:17,halign:'right'},6:{cellWidth:22,halign:'right'},7:{cellWidth:14,halign:'right'},8:{cellWidth:14,halign:'right'},9:{cellWidth:12}},
+    {fs:7,foot:[[{content:'Total Geral',colSpan:6,styles:RT},{content:fmt(c.tot),styles:RT},{content:P2(c.tot?1:0),styles:RT},{content:'',colSpan:2}]]});
+   doc.autoTable({...base,startY:doc.lastAutoTable.finalY+6,head:[tt('Resumo por classe (nº de itens, valor e peso)',4),['Classe','Nº de itens','Valor (R$)','Peso (%)']],
+    body:[['A','Classe A (até 80% do valor)'],['B','Classe B (80% a 95%)'],['C','Classe C (acima de 95%)']].map(([k,t],x)=>{const fl=x?GR:BL;return[ce(t,fl),ce(cls[k][0],fl,CT),ce(fmt(cls[k][1]),fl,RT),ce(P2(c.tot?cls[k][1]/c.tot:0),fl,RT)]}),
+    columnStyles:{1:{cellWidth:28},2:{cellWidth:36},3:{cellWidth:28}}})}
+  /* Composições analíticas */
+  if(db?.an){const cm=new Map();S.etapas.forEach(e=>e.itens.forEach(i=>{if(i.banco==='SINAPI'&&i.k==='C'&&db.an[i.c]&&!cm.has(i.c))cm.set(i.c,i)}));
+   if(cm.size){const ui=db.ufs.indexOf(O.uf),rw=[];
+    cm.forEach((i,code)=>{let sum=0;const ls=db.an[code].map(([t,cd,d,u,co])=>{const pr=db.map.get(t+cd)?.p[O.regime]?.[ui]??0;sum+=co*pr;return[ce(t==='I'?'Insumo':'Composição',GR),ce(cd,GR),ce(d,GR),ce(u,GR,CT),ce(NF4(co),GR,RT),ce(fmt(pr),GR,RT),ce(fmt(co*pr),GR,RT)]});
+     const B1=(t,o={})=>ce(t,BL,{fontStyle:'bold',...o});rw.push([B1('COMPOSIÇÃO'),B1(code),B1(i.d||''),B1(i.u||'',CT),B1(''),B1(''),B1(fmt(r2(sum)),RT)],...ls)});
+    tbl('COMPOSIÇÕES ANALÍTICAS (SEM B.D.I.)',['Tipo','Código','Descrição','Und','Coeficiente','Valor Unit','Total'],rw,{0:{cellWidth:20},1:{cellWidth:16},3:{cellWidth:10},4:{cellWidth:22},5:{cellWidth:20},6:{cellWidth:20}},{fs:7});
+    note(`Fonte: SINAPI ${db.ref} - ${UFN[O.uf]} - ${REG[O.regime][0]}. Valores sem B.D.I.`)}}
+  /* Memória de cálculo */
+  const MM=[];S.etapas.forEach((e,a)=>e.itens.forEach((i,b)=>{if(i.mem)MM.push([a,b,i])}));
+  if(MM.length)tbl('MEMÓRIA DE CÁLCULO',['Item','Código','Descrição','Und','Memória de cálculo','Quant.'],
+   MM.map(([a,b,i],x)=>{const fl=x%2?GR:BL;return[ce(`${a+1}.${b+1}`,fl),ce(i.c||'',fl),ce(i.d||'',fl),ce(i.u||'',fl,CT),ce(i.mem,fl),ce(fmt(+i.qtd||0),fl,RT)]}),
+   {0:{cellWidth:12},1:{cellWidth:16},3:{cellWidth:10},4:{cellWidth:55},5:{cellWidth:20}},{fs:7.5});
+  /* B.D.I. */
+  if(S.inc?.bdi){const D=S.bdiD||{},v=k=>(+D[k]||0)/100,bo={fontStyle:'bold'};
+   const rw=[['Administração central','AC','ac'],['Seguro','S','s'],['Risco','R','r'],['Garantia','G','g'],['Despesas financeiras','DF','df'],['Lucro','L','l'],['PIS','PIS','pis'],['COFINS','COFINS','cofins'],['ISS','ISS','iss'],['CPRB','CPRB','cprb']]
+    .map(([t,sy,k],x)=>{const fl=x%2?GR:BL;return[ce(t,fl),ce(sy,fl,CT),ce(P2(v(k)),fl,RT)]});
+   rw.push([{content:'Tributos (I = PIS + COFINS + ISS + CPRB)',styles:bo},{content:'I',styles:{...bo,...CT}},{content:P2(v('pis')+v('cofins')+v('iss')+v('cprb')),styles:{...bo,...RT}}],
+    [ce('B.D.I. calculado',BL,bo),ce('BDI',BL,{...bo,...CT}),ce(P2(bdiCalc()),BL,{...bo,...RT})],
+    [{content:'B.D.I. adotado no orçamento',styles:bo},{content:'',styles:bo},{content:P2((+O.bdi||0)/100),styles:{...bo,...RT}}]);
+   tbl('COMPOSIÇÃO DO B.D.I.',['Componente','Símbolo','Percentual'],rw,{1:{cellWidth:30},2:{cellWidth:30}},{fs:9});
+   note('BDI = [(1 + AC + S + R + G) × (1 + DF) × (1 + L) ÷ (1 - I)] - 1')}
+  /* Encargos sociais */
+  if(S.inc?.enc&&(S.enc||[]).length){const rw=[],tot=[0,0],H={fillColor:PU,textColor:255,fontStyle:'bold',halign:'right'};
+   ['A','B','C','D'].forEach(gp=>{const G2=S.enc.filter(x=>x.g===gp);if(!G2.length)return;let sh=0,sm=0;
+    G2.forEach((x,k)=>{const fl=k%2?GR:BL,h=(+x.h||0)/100,m=(+x.m||0)/100;sh+=h;sm+=m;rw.push([ce(gp,fl,CT),ce(x.c||'',fl),ce(x.d||'',fl),ce(P2(h),fl,RT),ce(P2(m),fl,RT)])});
+    rw.push([{content:'Total do Grupo '+gp,colSpan:3,styles:H},{content:P2(sh),styles:H},{content:P2(sm),styles:H}]);tot[0]+=sh;tot[1]+=sm});
+   rw.push([{content:'TOTAL DOS ENCARGOS SOCIAIS',colSpan:3,styles:H},{content:P2(tot[0]),styles:H},{content:P2(tot[1]),styles:H}]);
+   tbl('ENCARGOS SOCIAIS SOBRE A MÃO DE OBRA',['Grupo','Código','Descrição','Horista (%)','Mensalista (%)'],rw,{0:{cellWidth:14},1:{cellWidth:18},3:{cellWidth:28},4:{cellWidth:30}},{fs:8});
+   note(`Regime: ${REG[O.regime][0]}. ${O.encargos||''}`)}}
+ /* rodapé: assinatura em todas as páginas */
+ const N=doc.getNumberOfPages();for(let i=1;i<=N;i++){doc.setPage(i);const g=secs.filter(x=>x.p0<=i).pop();doc.setDrawColor(0);doc.setLineWidth(.3);doc.line(g.w/2-55,g.h-20,g.w/2+55,g.h-20);doc.setTextColor(0);doc.setFont('helvetica','normal');doc.setFontSize(g.cr?9:11);doc.text(O.responsavel||'',g.w/2,g.cr?g.h-15.5:g.h-15.3,{align:'center'});doc.text(O.cargo||'',g.w/2,g.cr?g.h-11.5:g.h-10.6,{align:'center'});doc.setFontSize(7);doc.text(`${i}/${N}`,g.w-10,g.h-6,{align:'right'})}
+ await dl(('Orcamento_'+(O.projeto||O.prefeitura||'obra')).replace(/[^\w]+/g,'_').slice(0,80)+'.pdf',doc.output('blob'),'PDF gerado')}
+function X(){const O=S.obra,A='Arial',bd={style:'thin',color:{argb:'FF000000'}},B={top:bd,left:bd,bottom:bd,right:bd},PU='FF1F3864',BL='FFD8ECF6',GR='FFEEEEEE',wb=new ExcelJS.Workbook();
+ const st=(x,o={})=>{x.font={name:A,size:o.sz||10,bold:!!o.b||o.fill===PU,color:{argb:o.fill===PU?'FFFFFFFF':'FF000000'}};if(o.fill)x.fill={type:'pattern',pattern:'solid',fgColor:{argb:o.fill}};x.alignment={horizontal:o.h||'left',vertical:o.v||'middle',wrapText:!!o.w};if(o.bd!==false)x.border=B;if(o.nf)x.numFmt=o.nf};
+ const put=(ws,ref,val,o)=>{const x=ws.getCell(ref);x.value=val;st(x,o);return x},mg=(ws,r)=>ws.mergeCells(r),L=k=>{let s='';for(k++;k>0;k=Math.floor((k-1)/26))s=String.fromCharCode(65+(k-1)%26)+s;return s};
+ const lgo=(W,src,col,rt)=>{if(!src)return;const id=wb.addImage({base64:src,extension:/^data:image\/png/.test(src)?'png':'jpeg'});W.addImage(id,{tl:{nativeCol:col,nativeColOff:rt?Math.max(0,Math.round(((W.getColumn(col+1).width||8.43)*7+5-64)*9525)):0,nativeRow:0,nativeRowOff:0},ext:{width:64,height:64}})};
+ const mk=(nm,title,heads,wd,land)=>{const W=wb.addWorksheet(nm),la=L(heads.length-1);wd.forEach((w,i)=>W.getColumn(i+1).width=w);mg(W,`A4:${la}4`);mg(W,`A5:${la}5`);mg(W,`A6:${la}6`);put(W,'A4',O.estado||'',{h:'center',sz:11,bd:false});put(W,'A5',O.prefeitura||'',{h:'center',sz:11,b:1,bd:false});put(W,'A6',`PROJETO: ${O.projeto||''}  |  LOCAL: ${O.local||''}  |  INTERESSADO: ${O.interessado||''}`,{h:'center',sz:9,bd:false});lgo(W,S.logoE,0);lgo(W,S.logoD,heads.length-1,1);
+  mg(W,`A7:${la}7`);put(W,'A7',title,{b:1,sz:12,h:'center',fill:PU});heads.forEach((h,i)=>put(W,L(i)+'8',h,{b:1,h:'center',w:1,fill:PU}));W.getRow(8).height=30;
+  W.pageSetup={orientation:land?'landscape':'portrait',fitToPage:true,fitToHeight:0,fitToWidth:1,margins:{left:.4,right:.4,top:.5,bottom:1.3,header:.3,footer:.45}};const e=t=>String(t||'').replace(/&/g,'&&');W.headerFooter.oddFooter=`&C&"Arial,Regular"&10_______________________________________________\n${e(O.responsavel)}\n${e(O.cargo)}`;return W};
+ return{wb,put,mg,L,mk,PU,BL,GR,NF:'#,##0.00',PCT:'0.00%'}}
+const xlsx=async(wb,nm)=>dl(nm,new Blob([await wb.xlsx.writeBuffer()],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}),'Arquivo gerado');
+const slug=t=>String(t||'obra').replace(/[^\w]+/g,'_').slice(0,60);
+async function mexp(){ensureIds();const{M,k,m,c}=medCalc();if(!m)return;const{wb,put,mg,mk,GR,BL,NF,PCT}=X();
+ const W=mk('Medição '+(k+1),`BOLETIM DE MEDIÇÃO Nº ${k+1}`+(m.ini||m.fim?` - PERÍODO: ${fdt(m.ini)} A ${fdt(m.fim)}`:''),['Item','Código','Descrição','Und','Quant. contratada','Valor unit. c/ BDI','Valor contratado','Qtd. anterior','Qtd. medição','Qtd. acumulada','Saldo (qtd.)','Valor anterior','Valor da medição','Valor acumulado','Saldo (R$)','% exec.'],[8,10,44,6,11,11,14,10,10,10,10,13,13,14,14,8],true);
+ let q=9;const er=[],o=(fl,h)=>({fill:fl,h:h||'right',nf:NF});
+ S.etapas.forEach((e,a)=>{const g=q++,f=q;er.push(g);
+  e.itens.forEach((i,b)=>{const ub=c.E[a].it[b].ub,Q=+i.qtd||0,pv=M.slice(0,k).reduce((s,y)=>s+(+y.q?.[i.id]||0),0),cu=+m.q?.[i.id]||0;
+   put(W,'A'+q,`${a+1}.${b+1}`,{fill:GR});put(W,'B'+q,String(i.c||''),{fill:GR});put(W,'C'+q,i.d||'',{w:1,fill:GR});put(W,'D'+q,i.u||'',{h:'center',fill:GR});put(W,'E'+q,Q,o(GR));put(W,'F'+q,ub,o(GR));
+   put(W,'G'+q,{formula:`ROUND(E${q}*F${q},2)`},o(GR));put(W,'H'+q,pv,o(GR));put(W,'I'+q,cu,o(GR));put(W,'J'+q,{formula:`H${q}+I${q}`},o(GR));put(W,'K'+q,{formula:`E${q}-J${q}`},o(GR));
+   put(W,'L'+q,{formula:`ROUND(H${q}*F${q},2)`},o(GR));put(W,'M'+q,{formula:`ROUND(I${q}*F${q},2)`},o(GR));put(W,'N'+q,{formula:`L${q}+M${q}`},o(GR));put(W,'O'+q,{formula:`G${q}-N${q}`},o(GR));put(W,'P'+q,{formula:`IF(E${q}=0,0,J${q}/E${q})`},{fill:GR,h:'right',nf:PCT});q++});
+  put(W,'A'+g,String(a+1),{b:1,fill:BL});['B','D','E','F','H','I','J','K'].forEach(x=>put(W,x+g,'',{fill:BL}));put(W,'C'+g,e.nome||'',{b:1,fill:BL});
+  ['G','L','M','N','O'].forEach(x=>put(W,x+g,{formula:e.itens.length?`SUM(${x}${f}:${x}${q-1})`:'0'},{b:1,...o(BL)}));put(W,'P'+g,{formula:`IF(G${g}=0,0,N${g}/G${g})`},{b:1,fill:BL,h:'right',nf:PCT})});
+ mg(W,`A${q}:F${q}`);put(W,'A'+q,'TOTAL GERAL',{b:1,h:'right'});['G','L','M','N','O'].forEach(x=>put(W,x+q,{formula:er.length?er.map(y=>x+y).join('+'):'0'},{b:1,h:'right',nf:NF}));put(W,'P'+q,{formula:`IF(G${q}=0,0,N${q}/G${q})`},{b:1,h:'right',nf:PCT});
+ const tr=q,Z=mk('Resumo das Medições','RESUMO DAS MEDIÇÕES',['Nº','Período','Valor da medição','Valor acumulado','% acumulado','Saldo contratual'],[8,30,18,18,14,18]);
+ let ac=0;M.forEach((y,j)=>{const r=9+j;let v=0;S.etapas.forEach((e,a)=>e.itens.forEach((i,b)=>{v+=r2((+y.q?.[i.id]||0)*c.E[a].it[b].ub)}));v=r2(v);ac+=v;const fl=j%2?GR:BL;
+  put(Z,'A'+r,j+1,{h:'center',fill:fl});put(Z,'B'+r,y.ini||y.fim?`${fdt(y.ini)} a ${fdt(y.fim)}`:'',{fill:fl});put(Z,'C'+r,v,o(fl));put(Z,'D'+r,{formula:`SUM(C$9:C${r})`},o(fl));put(Z,'E'+r,{formula:`D${r}/$C$${9+M.length}`},{fill:fl,h:'right',nf:PCT});put(Z,'F'+r,{formula:`$C$${9+M.length}-D${r}`},o(fl))});
+ put(Z,'A'+(9+M.length),'Valor contratado (com B.D.I.)',{b:1,bd:false});put(Z,'C'+(9+M.length),c.tot,{b:1,h:'right',nf:NF});
+ await xlsx(wb,`Medicao_${k+1}_${slug(S.obra.projeto)}.xlsx`)}
+async function dexp(){const D=(S.dia||[]).slice().sort((a,b)=>(a.data||'').localeCompare(b.data||''));if(!D.length)return;const{wb,put,mk,GR,BL}=X();
+ const W=mk('Diário de Obras','DIÁRIO DE OBRAS',['Data','Clima manhã','Clima tarde','Efetivo','Equipe / funções','Equipamentos','Serviços executados','Ocorrências','Responsável'],[11,11,11,9,26,26,52,36,20],true);
+ D.forEach((x,i)=>{const r=9+i,fl=i%2?GR:BL,w={w:1,v:'top',fill:fl};put(W,'A'+r,fdt(x.data),{...w,h:'center'});put(W,'B'+r,x.manha||'',w);put(W,'C'+r,x.tarde||'',w);put(W,'D'+r,x.efetivo===''?'':+x.efetivo,{...w,h:'center'});put(W,'E'+r,x.equipe||'',w);put(W,'F'+r,x.equip||'',w);put(W,'G'+r,x.serv||'',w);put(W,'H'+r,x.ocor||'',w);put(W,'I'+r,x.resp||'',w)});
+ await xlsx(wb,`Diario_de_Obras_${slug(S.obra.projeto)}.xlsx`)}
+async function dl(nm,blob,msg){let d=null;try{d=await window.claude?.use('downloads')}catch(e){}
+ if(d){try{await d.save({filename:nm,data:blob});toast(msg)}catch(e){if(e.code!=='declined')toast('Não foi possível salvar: '+(e.message||e.code))}}
+ else{const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=nm;a.click()}}
+(async()=>{render();const d=await idb('get');if(d&&d.items)setDb(d);dbReady=true;render()})();
+</script></body></html>
