@@ -169,5 +169,5 @@
     const c = document.getElementById('coins'); if (c) c.onclick = open;
     draw();
   }
-  window.Cloud = { init, run, push, pull, saveBase, loadBase, baseMeta, open, logoLocal, get cfg() { return C.cfg; } };
+  window.Cloud = { setToast: (f) => { C.toast = f; }, init, run, push, pull, saveBase, loadBase, baseMeta, open, logoLocal, get cfg() { return C.cfg; } };
 })();
